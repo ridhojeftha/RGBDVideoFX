@@ -11,7 +11,7 @@ will not work
 
 apps/
   rgbd/
-      rgbdVfxCallibrate/ 
+      rgbdVfxApp/ 
 
 will work 
 
