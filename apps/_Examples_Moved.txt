@@ -1,0 +1,17 @@
+This folder will remain as a place to work on apps. 
+Just remember projects in apps/ still need to be two levels deep. 
+
+So: 
+
+apps/
+  rgbd/ 
+
+will not work
+
+
+apps/
+  rgbd/
+      rgbdVfxCallibrate/ 
+
+will work 
+
