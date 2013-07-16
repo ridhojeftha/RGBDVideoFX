@@ -1,59 +1,59 @@
-#include "testApp.h"
+#include "mainApp.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void mainApp::setup(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void mainApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
-
-}
-
-//--------------------------------------------------------------
-void testApp::keyPressed(int key){
+void mainApp::draw(){
 
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
+void mainApp::keyPressed(int key){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
+void mainApp::keyReleased(int key){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void mainApp::mouseMoved(int x, int y ){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void mainApp::mouseDragged(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void mainApp::mousePressed(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void mainApp::mouseReleased(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
+void mainApp::windowResized(int w, int h){
 
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void mainApp::gotMessage(ofMessage msg){
+
+}
+
+//--------------------------------------------------------------
+void mainApp::dragEvent(ofDragInfo dragInfo){
 
 }
