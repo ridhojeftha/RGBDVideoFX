@@ -57,7 +57,7 @@ void startKinect() {
 
 
     device = &freenect.createDevice<Capture>(0);
-    device->setDepthFormat(FREENECT_DEPTH_11BIT);
+  //  device->setDepthFormat(FREENECT_DEPTH_11BIT);
     device->setLed(LED_BLINK_GREEN);
 
 

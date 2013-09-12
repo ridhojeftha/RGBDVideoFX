@@ -16,7 +16,7 @@
 int window = -1;
 GLUI *glui = NULL;
 
-int selectedEffect = 3;
+int selectedEffect = 1;
 
 int screenWidth = 0;
 int screenHeight = 0;
@@ -181,6 +181,8 @@ void createInterface() {
     focalLengthSpinner->set_float_limits(0.0, 10);
     GLUI_Spinner *focalDepthSpinner = glui->add_spinner_to_panel(DOFRollout, "Focal Depth ", GLUI_SPINNER_FLOAT, &dofEffect->focalPlaneDepth, -1, gluiCallback);
     focalDepthSpinner->set_float_limits(0.0, 1);
+    GLUI_Spinner *intensitySpinner = glui->add_spinner_to_panel(DOFRollout, "Intensity ", GLUI_SPINNER_FLOAT, &dofEffect->intensity, -1, gluiCallback);
+    intensitySpinner->set_float_limits(0.0, 10);
 
 
     //Relighting
@@ -461,8 +463,12 @@ GLuint createTexture() {
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     //Setup filtering and wrapping
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 

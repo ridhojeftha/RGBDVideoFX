@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="RGBDVideoFX" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/RGBDVideoFX" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="../include" />
+				</Compiler>
+				<Linker>
+					<Add option="-Llib" />
+					<Add library="freeglut" />
+					<Add library="freenect" />
+					<Add library="glui" />
+					<Add library="glew32s" />
+					<Add library="opengl32" />
+					<Add library="winmm" />
+					<Add library="pthreadGC2" />
+					<Add directory="../lib" />
+					<Add directory="../../RGBDVideoFX" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/RGBDVideoFX" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../Capture.h" />
+		<Unit filename="../CartoonEffect.cpp" />
+		<Unit filename="../CartoonEffect.h" />
+		<Unit filename="../DOFEffect.cpp" />
+		<Unit filename="../DOFEffect.h" />
+		<Unit filename="../Effect.h" />
+		<Unit filename="../FogEffect.cpp" />
+		<Unit filename="../FogEffect.h" />
+		<Unit filename="../FrameBuffer.cpp" />
+		<Unit filename="../FrameBuffer.h" />
+		<Unit filename="../HBilateral.frag" />
+		<Unit filename="../HBlur.frag" />
+		<Unit filename="../Images/bird_DM.bmp" />
+		<Unit filename="../Images/bird_RGB.bmp" />
+		<Unit filename="../Images/child_DM.bmp" />
+		<Unit filename="../Images/child_RGB.bmp" />
+		<Unit filename="../Images/dofpro_batch_math1DM.bmp" />
+		<Unit filename="../Images/dofpro_batch_math1RGB.bmp" />
+		<Unit filename="../Images/dofpro_billiardsDM.bmp" />
+		<Unit filename="../Images/dofpro_billiardsRGB.bmp" />
+		<Unit filename="../Images/dofpro_carsDM.bmp" />
+		<Unit filename="../Images/dofpro_carsRGB.bmp" />
+		<Unit filename="../Images/dofpro_chairsDM.bmp" />
+		<Unit filename="../Images/dofpro_chairsRGB.bmp" />
+		<Unit filename="../Images/dofpro_chessDM.bmp" />
+		<Unit filename="../Images/dofpro_chessRGB.bmp" />
+		<Unit filename="../Images/dofpro_cornboxDM.bmp" />
+		<Unit filename="../Images/dofpro_cornboxRGB.bmp" />
+		<Unit filename="../Images/dofpro_diamondsDM.bmp" />
+		<Unit filename="../Images/dofpro_diamondsRGB.bmp" />
+		<Unit filename="../Images/dofpro_diet_cokeDM.bmp" />
+		<Unit filename="../Images/dofpro_diet_cokeRGB.bmp" />
+		<Unit filename="../Images/dofpro_diet_pepsiDM.bmp" />
+		<Unit filename="../Images/dofpro_diet_pepsiRGB.bmp" />
+		<Unit filename="../Images/dofpro_fenceDM.bmp" />
+		<Unit filename="../Images/dofpro_fenceRGB.bmp" />
+		<Unit filename="../Images/dofpro_hairDM.bmp" />
+		<Unit filename="../Images/dofpro_hairRGB.bmp" />
+		<Unit filename="../Images/dofpro_math1DM.bmp" />
+		<Unit filename="../Images/dofpro_math1RGB.bmp" />
+		<Unit filename="../Images/dofpro_math2DM.bmp" />
+		<Unit filename="../Images/dofpro_math2RGB.bmp" />
+		<Unit filename="../Images/dofpro_math3DM.bmp" />
+		<Unit filename="../Images/dofpro_math3RGB.bmp" />
+		<Unit filename="../Images/dofpro_math4DM.bmp" />
+		<Unit filename="../Images/dofpro_math4RGB.bmp" />
+		<Unit filename="../Images/dofpro_math5DM.bmp" />
+		<Unit filename="../Images/dofpro_math5RGB.bmp" />
+		<Unit filename="../Images/dofpro_teacupDM.bmp" />
+		<Unit filename="../Images/dofpro_teacupRGB.bmp" />
+		<Unit filename="../Images/house_DM.bmp" />
+		<Unit filename="../Images/house_RGB.bmp" />
+		<Unit filename="../Images/pumpkins_DM.bmp" />
+		<Unit filename="../Images/pumpkins_RGB.bmp" />
+		<Unit filename="../Images/teapot_colour.bmp" />
+		<Unit filename="../Images/teapot_depth.bmp" />
+		<Unit filename="../Images/teapot_normals.bmp" />
+		<Unit filename="../Images/teapot_reflectance.bmp" />
+		<Unit filename="../Kinect.cpp" />
+		<Unit filename="../Kinect.h" />
+		<Unit filename="../Main.cpp" />
+		<Unit filename="../Main.h" />
+		<Unit filename="../RelightingEffect.cpp" />
+		<Unit filename="../RelightingEffect.h" />
+		<Unit filename="../Renderer.cpp" />
+		<Unit filename="../Renderer.h" />
+		<Unit filename="../Shader.cpp" />
+		<Unit filename="../Shader.h" />
+		<Unit filename="../VBilateral.frag" />
+		<Unit filename="../VBlur.frag" />
+		<Unit filename="../depthdiscontinuity.frag" />
+		<Unit filename="../fog.frag" />
+		<Unit filename="../kuwahara.frag" />
+		<Unit filename="../passcoords.vert" />
+		<Unit filename="../phong.frag" />
+		<Unit filename="../quantization.frag" />
+		<Unit filename="../radialvalley.frag" />
+		<Unit filename="../readme.md" />
+		<Unit filename="../sobel.frag" />
+		<Unit filename="../texture.frag" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

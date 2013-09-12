@@ -15,7 +15,7 @@
 //#include <GL/glu.h>
 
 #include <GL\freeglut.h>
-	
+
 	using namespace std;
 
 	//define a FreenectDevice and a Mutex class
@@ -63,15 +63,31 @@
 				//The depth buffer contains a 640x480 array of 16bit (2 byte) depth values ranging from 0-2047
 				//with all values >=1024 indicating "no data" (shadows).
 				uint16_t* depth = static_cast<uint16_t*>(_depth);
-				
+
+                for( unsigned int i = 0 ; i < 640*480 ; i++) {
+
+
+					int pval = m_gamma[depth[i]]; //the physical depth value
+                    int d = 0;
+
+                    if (pval<m_gamma[m_gamma.size()])
+                       d = 255 - (255 * pval / (m_gamma[m_gamma.size()-1])-m_gamma[0]);
+
+                            m_buffer_depth[3*i+0] = d;
+							m_buffer_depth[3*i+1] = d;
+							m_buffer_depth[3*i+2] = d;
+                }
+
+
+
 				//printf("receiving depth data\n");
-				
+
 				//printBuffer (depth);
 				/*
-				This snippet takes the raw depth value and maps it into a color.  The 
-				values are mapped into a somewhat smooth spectrum (from near to far): 
-				white, red, yellow, green, cyan, blue, black.  depth_mid[3*i + 0] is 
-				the red byte, depth_mid[3*i + 1] is the green byte, and depth_mid[3*i 
+				This snippet takes the raw depth value and maps it into a color.  The
+				values are mapped into a somewhat smooth spectrum (from near to far):
+				white, red, yellow, green, cyan, blue, black.  depth_mid[3*i + 0] is
+				the red byte, depth_mid[3*i + 1] is the green byte, and depth_mid[3*i
 				+ 2] is the blue byte. This gets swapped to the depth buffer in the GL Method.
 				*/
 
@@ -86,8 +102,8 @@
 					1.0 / (double(depthValue) * -0.0030711016 + 3.3309495161)
 				*/
 
-				
-				for( unsigned int i = 0 ; i < 640*480 ; i++) {
+
+				/*for( unsigned int i = 0 ; i < 640*480 ; i++) {
 					int pval = m_gamma[depth[i]]; //the physical depth value
 					int lb = pval & 0xff;
 					switch (pval>>8) {
@@ -127,7 +143,7 @@
 							m_buffer_depth[3*i+2] = 0;
 							break;
 					}
-				}
+				}*/
 				m_new_depth_frame = true;
 				m_depth_mutex.unlock();
 			}

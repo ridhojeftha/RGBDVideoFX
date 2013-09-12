@@ -14,6 +14,7 @@ public:
     float lensDiameter;
     float focalLength;
     float focalPlaneDepth;
+    float intensity;
     
 private:
 

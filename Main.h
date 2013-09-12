@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>
-#include <math.h> 
+#include <math.h>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -28,13 +28,13 @@ extern int window;
 
 //CHANGE THESE
 bool useKinect=true;
-bool useEffects=true;
+bool useEffects=false;
 
 int frameCounter=0;
 bool benchmarking=false;
 double totalTime=0;
 
-unsigned long  startTime, endTime, tenFrameTime;    
+unsigned long  startTime, endTime, tenFrameTime;
 
 int main(int argc, char** argv);
 void keyboard(unsigned char key, int x, int y);

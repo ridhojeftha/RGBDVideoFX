@@ -12,6 +12,9 @@ int main(int argc, char** argv) {
     } else {
         inputWidth = 720;
         inputHeight = 540;
+
+      //  inputWidth=1000;
+      //  inputHeight=1000;
     }
 
 
@@ -145,19 +148,24 @@ void loadTextureFiles() {
     loadBMP("Images/teapot_normals.bmp", normalTexture);
     loadBMP("Images/teapot_reflectance.bmp", reflectanceTexture);
 
+  //  loadBMP("Images/pixel_RGB.bmp", colourTexture);
+  // loadBMP("Images/pixel_Depth.bmp", depthTexture);
 
-    //  loadBMP("Images/teapot_colour.bmp", colourTexture);
-    //   loadBMP("Images/teapot_depth.bmp", depthTexture);
+
+   //loadBMP("Images/teapot_colour.bmp", colourTexture);
+
+  //  loadBMP("Images/teapot_colour_noise.bmp", colourTexture);
+ //     loadBMP("Images/teapot_depth.bmp", depthTexture);
 
     //   loadBMP("Images/dofpro_billiardsRGB.bmp", colourTexture);
     //  loadBMP("Images/dofpro_billiardsDM.bmp", depthTexture);
 
 
-    //   loadBMP("Images/dofpro_diet_pepsiRGB.bmp", colourTexture);
-    //  loadBMP("Images/dofpro_diet_pepsiDM.bmp", depthTexture);
+        loadBMP("Images/dofpro_diet_pepsiRGB.bmp", colourTexture);
+      loadBMP("Images/dofpro_diet_pepsiDM.bmp", depthTexture);
 
-    loadBMP("Images/dofpro_teacupRGB.bmp", colourTexture);
-    loadBMP("Images/dofpro_teacupDM.bmp", depthTexture);
+  //  loadBMP("Images/dofpro_teacupRGB.bmp", colourTexture);
+  //  loadBMP("Images/dofpro_teacupDM.bmp", depthTexture);
 
     // loadBMP("Images/dofpro_chessRGB.bmp", colourTexture);
     // loadBMP("Images/dofpro_chessDM.bmp", depthTexture);
