@@ -85,7 +85,7 @@
 1377584762 source:d:\rgbd\rgbdvideofx\framebuffer.cpp
 	"FrameBuffer.h"
 
-1378951311 source:d:\rgbd\rgbdvideofx\kinect.cpp
+1378955795 source:d:\rgbd\rgbdvideofx\kinect.cpp
 	"Kinect.h"
 
 1377719664 d:\rgbd\rgbdvideofx\kinect.h
@@ -137,7 +137,7 @@
 	<stdint.h>
 	<sys/time.h>
 
-1378951313 source:d:\rgbd\rgbdvideofx\main.cpp
+1378955795 source:d:\rgbd\rgbdvideofx\main.cpp
 	"Main.h"
 	"Kinect.h"
 	"Renderer.h"
@@ -849,7 +849,7 @@
 
 1377584731 d:\rgbd\rgbdvideofx\include\eigen\src\eigen2support\geometry\parametrizedline.h
 
-1378951311 source:d:\rgbd\rgbdvideofx\renderer.cpp
+1378955795 source:d:\rgbd\rgbdvideofx\renderer.cpp
 	<stdlib.h>
 	<stdio.h>
 	<iostream>

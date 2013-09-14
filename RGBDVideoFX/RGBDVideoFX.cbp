@@ -17,13 +17,14 @@
 				</Compiler>
 				<Linker>
 					<Add option="-Llib" />
-					<Add library="freeglut" />
+					<Add library="pthreadGC2" />
 					<Add library="freenect" />
 					<Add library="glui" />
 					<Add library="glew32s" />
 					<Add library="opengl32" />
+					<Add library="freeglut" />
+					<Add library="glu32" />
 					<Add library="winmm" />
-					<Add library="pthreadGC2" />
 					<Add directory="../lib" />
 					<Add directory="../../RGBDVideoFX" />
 				</Linker>
