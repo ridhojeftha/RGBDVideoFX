@@ -102,24 +102,27 @@ GLuint Shader::loadShaderFile(const char *shaderFile, GLenum type) {
     std::ifstream in(shaderFile);
     std::string src = "";
     std::string line = "";
+    
     while (std::getline(in, line))
-        src += line + "\n";
-    //GLint compiled;
+        src += line+"\n";
+    
+    src.resize(src.length()-1);//POSSIBLE FIX (Remove last \n)
+    
     GLuint shaderID = glCreateShader(type);
 
     const char* source = src.c_str();
-    glShaderSource(shaderID, 1, &source, NULL);
+    GLint shader_length = src.size();
+    glShaderSource(shaderID, 1, &source, (GLint*)&shader_length);
     glCompileShader(shaderID);
-    //if(!shaderID)
-    //{
-    //    std::cerr << "Could not compile the shader";
-    //    return 0;
-    //}
+
 
     GLint status;
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+    
     if (status == GL_FALSE) {
-        std::string msg("Compile failure in shader:\n");
+        std::string msg("Compile failure in shader: ");
+        msg.append(shaderFile);
+        msg.append("\n");
 
         GLint infoLogLength;
         glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
