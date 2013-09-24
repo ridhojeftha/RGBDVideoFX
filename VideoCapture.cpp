@@ -22,10 +22,11 @@ void updateVideoCapture() {
     //vector<int> rawDepth(640*480);
     device->getDepth(depth);
     device->getRGB(rgb);
+    vector<float> normals = getNormalMap(); //basically you can call getNormalMap() from anywhere
 
     //Temporary GL Code
     glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, &depth[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_FLOAT, &normals[0]);
 
     glBindTexture(GL_TEXTURE_2D, colourTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, &rgb[0]);

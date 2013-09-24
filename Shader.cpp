@@ -106,7 +106,6 @@ GLuint Shader::loadShaderFile(const char *shaderFile, GLenum type) {
     if (in.is_open())
         while (std::getline(in, line)){
             src += line+"\n";
-            std::cout << line;
         }
     else
         std::cout << "Can't open file.\n";

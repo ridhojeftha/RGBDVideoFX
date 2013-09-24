@@ -13,7 +13,7 @@ extern "C"
 
     using namespace std;
 
-static vector<float> normalMap(640 * 480 * 4);
+static vector<float> normalMap(640 * 480 * 4, 0.0);
 
 void generateNormalMap(int index, Vector3 centre_vertex, Vector3 right_vertex, Vector3 up_vertex){
 
@@ -25,29 +25,19 @@ void generateNormalMap(int index, Vector3 centre_vertex, Vector3 right_vertex, V
     Vector3 y_vector = up_vertex - centre_vertex;
 
     //y_vector.cross(x_vector)
-    Vector3 normal(y_vector.cross (x_vector));
+    Vector3 normal(x_vector.cross (y_vector));
 
     normal.normalize();
 
-    normalMap[3 * index +0] = normal.x;
-    normalMap[3 * index +1] = normal.y;
-    normalMap[3 * index +2] = normal.z;
+    normalMap[3 * index +0] = (normal.x+1)/2;
+    normalMap[3 * index +1] = (normal.y+1)/2;
+    normalMap[3 * index +2] = (normal.z+1)/2;
 }
 
     //Method to be called to get Normal Map
-			bool getNormal(vector<float> &buffer){
-				//m_depth_mutex.lock(); CREATE MUTEX LOCK
-
-				//TODO: cmaybe change m_new_depth_frame and m_new_rgb_frame to one variable as we want synchronized frames
-				//if(m_new_depth_frame) {
-					buffer.swap(normalMap);
-					//m_new_depth_frame = false;
-					//m_depth_mutex.unlock();
-					return true;
-				//} else {
-					//m_depth_mutex.unlock();
-				//	return false;
-				//}
-			}
+    //In the range of [-1;1]
+    vector<float> getNormalMap(){
+    return normalMap;
+	}
 
 #endif // NORMALMAPGENERATOR_H

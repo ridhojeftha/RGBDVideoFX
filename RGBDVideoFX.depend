@@ -913,3 +913,888 @@
 1380013240 h:\documents\rgbd\vector3.h
 	<iostream>
 
+1380021669 source:h:\documents\rgbdvideofx\cartooneffect.cpp
+	"CartoonEffect.h"
+	"Renderer.h"
+
+1380021669 h:\documents\rgbdvideofx\cartooneffect.h
+	"Effect.h"
+
+1380021669 h:\documents\rgbdvideofx\effect.h
+	<GL/glew.h>
+	"Shader.h"
+	"FrameBuffer.h"
+
+1380021701 h:\documents\rgbdvideofx\include\gl\glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1380021701 h:\documents\rgbdvideofx\include\gl\glu.h
+	<GL/gl.h>
+
+1380021701 h:\documents\rgbdvideofx\include\gl\gl.h
+
+1380021688 h:\documents\rgbdvideofx\shader.h
+	<GL/glew.h>
+	<iostream>
+	<fstream>
+	<string>
+	<stdexcept>
+
+1380021669 h:\documents\rgbdvideofx\framebuffer.h
+	<stdio.h>
+	<GL/glew.h>
+
+1380040063 h:\documents\rgbdvideofx\renderer.h
+	<GL\glew.h>
+	<GL\freeglut.h>
+	<GL/glui.h>
+
+1380021701 h:\documents\rgbdvideofx\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1380021701 h:\documents\rgbdvideofx\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1380021701 h:\documents\rgbdvideofx\include\gl\freeglut_ext.h
+	<stdarg.h>
+
+1380021701 h:\documents\rgbdvideofx\include\gl\glui.h
+	<cstdlib>
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1380021701 h:\documents\rgbdvideofx\include\gl\glut.h
+	"freeglut.h"
+
+1380021669 source:h:\documents\rgbdvideofx\dofeffect.cpp
+	"DOFEffect.h"
+	"Renderer.h"
+
+1380021669 h:\documents\rgbdvideofx\dofeffect.h
+	"Effect.h"
+
+1380021669 source:h:\documents\rgbdvideofx\fogeffect.cpp
+	"FogEffect.h"
+	"Renderer.h"
+
+1380021669 h:\documents\rgbdvideofx\fogeffect.h
+	"Effect.h"
+
+1380021669 source:h:\documents\rgbdvideofx\framebuffer.cpp
+	"FrameBuffer.h"
+
+1380021688 source:h:\documents\rgbdvideofx\relightingeffect.cpp
+	"RelightingEffect.h"
+	"Renderer.h"
+	<Eigen/Core>
+	<Eigen/Geometry>
+
+1380021688 h:\documents\rgbdvideofx\relightingeffect.h
+	"Effect.h"
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\core
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/Core/util/Macros.h"
+	<complex>
+	"src/Core/util/MKL_support.h"
+	<malloc.h>
+	<immintrin.h>
+	<emmintrin.h>
+	<xmmintrin.h>
+	<pmmintrin.h>
+	<tmmintrin.h>
+	<smmintrin.h>
+	<nmmintrin.h>
+	<altivec.h>
+	<arm_neon.h>
+	<omp.h>
+	<cerrno>
+	<cstddef>
+	<cstdlib>
+	<cmath>
+	<cassert>
+	<functional>
+	<iosfwd>
+	<cstring>
+	<string>
+	<limits>
+	<climits>
+	<algorithm>
+	<iostream>
+	<intrin.h>
+	<new>
+	"src/Core/util/Constants.h"
+	"src/Core/util/ForwardDeclarations.h"
+	"src/Core/util/Meta.h"
+	"src/Core/util/StaticAssert.h"
+	"src/Core/util/XprHelper.h"
+	"src/Core/util/Memory.h"
+	"src/Core/NumTraits.h"
+	"src/Core/MathFunctions.h"
+	"src/Core/GenericPacketMath.h"
+	"src/Core/arch/SSE/PacketMath.h"
+	"src/Core/arch/SSE/MathFunctions.h"
+	"src/Core/arch/SSE/Complex.h"
+	"src/Core/arch/AltiVec/PacketMath.h"
+	"src/Core/arch/AltiVec/Complex.h"
+	"src/Core/arch/NEON/PacketMath.h"
+	"src/Core/arch/NEON/Complex.h"
+	"src/Core/arch/Default/Settings.h"
+	"src/Core/Functors.h"
+	"src/Core/DenseCoeffsBase.h"
+	"src/Core/DenseBase.h"
+	"src/Core/MatrixBase.h"
+	"src/Core/EigenBase.h"
+	"src/Core/Assign.h"
+	"src/Core/util/BlasUtil.h"
+	"src/Core/DenseStorage.h"
+	"src/Core/NestByValue.h"
+	"src/Core/ForceAlignedAccess.h"
+	"src/Core/ReturnByValue.h"
+	"src/Core/NoAlias.h"
+	"src/Core/PlainObjectBase.h"
+	"src/Core/Matrix.h"
+	"src/Core/Array.h"
+	"src/Core/CwiseBinaryOp.h"
+	"src/Core/CwiseUnaryOp.h"
+	"src/Core/CwiseNullaryOp.h"
+	"src/Core/CwiseUnaryView.h"
+	"src/Core/SelfCwiseBinaryOp.h"
+	"src/Core/Dot.h"
+	"src/Core/StableNorm.h"
+	"src/Core/MapBase.h"
+	"src/Core/Stride.h"
+	"src/Core/Map.h"
+	"src/Core/Block.h"
+	"src/Core/VectorBlock.h"
+	"src/Core/Ref.h"
+	"src/Core/Transpose.h"
+	"src/Core/DiagonalMatrix.h"
+	"src/Core/Diagonal.h"
+	"src/Core/DiagonalProduct.h"
+	"src/Core/PermutationMatrix.h"
+	"src/Core/Transpositions.h"
+	"src/Core/Redux.h"
+	"src/Core/Visitor.h"
+	"src/Core/Fuzzy.h"
+	"src/Core/IO.h"
+	"src/Core/Swap.h"
+	"src/Core/CommaInitializer.h"
+	"src/Core/Flagged.h"
+	"src/Core/ProductBase.h"
+	"src/Core/GeneralProduct.h"
+	"src/Core/TriangularMatrix.h"
+	"src/Core/SelfAdjointView.h"
+	"src/Core/products/GeneralBlockPanelKernel.h"
+	"src/Core/products/Parallelizer.h"
+	"src/Core/products/CoeffBasedProduct.h"
+	"src/Core/products/GeneralMatrixVector.h"
+	"src/Core/products/GeneralMatrixMatrix.h"
+	"src/Core/SolveTriangular.h"
+	"src/Core/products/GeneralMatrixMatrixTriangular.h"
+	"src/Core/products/SelfadjointMatrixVector.h"
+	"src/Core/products/SelfadjointMatrixMatrix.h"
+	"src/Core/products/SelfadjointProduct.h"
+	"src/Core/products/SelfadjointRank2Update.h"
+	"src/Core/products/TriangularMatrixVector.h"
+	"src/Core/products/TriangularMatrixMatrix.h"
+	"src/Core/products/TriangularSolverMatrix.h"
+	"src/Core/products/TriangularSolverVector.h"
+	"src/Core/BandMatrix.h"
+	"src/Core/CoreIterators.h"
+	"src/Core/BooleanRedux.h"
+	"src/Core/Select.h"
+	"src/Core/VectorwiseOp.h"
+	"src/Core/Random.h"
+	"src/Core/Replicate.h"
+	"src/Core/Reverse.h"
+	"src/Core/ArrayBase.h"
+	"src/Core/ArrayWrapper.h"
+	"src/Core/products/GeneralMatrixMatrix_MKL.h"
+	"src/Core/products/GeneralMatrixVector_MKL.h"
+	"src/Core/products/GeneralMatrixMatrixTriangular_MKL.h"
+	"src/Core/products/SelfadjointMatrixMatrix_MKL.h"
+	"src/Core/products/SelfadjointMatrixVector_MKL.h"
+	"src/Core/products/TriangularMatrixMatrix_MKL.h"
+	"src/Core/products/TriangularMatrixVector_MKL.h"
+	"src/Core/products/TriangularSolverMatrix_MKL.h"
+	"src/Core/Assign_MKL.h"
+	"src/Core/GlobalFunctions.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+	"Eigen2Support"
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\disablestupidwarnings.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\macros.h
+	<cstdlib>
+	<iostream>
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\mkl_support.h
+	<mkl.h>
+	<mkl_lapacke.h>
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\constants.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\forwarddeclarations.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\meta.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\staticassert.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\xprhelper.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\memory.h
+	<unistd.h>
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\numtraits.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\mathfunctions.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\genericpacketmath.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\sse\packetmath.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\sse\mathfunctions.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\sse\complex.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\altivec\packetmath.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\altivec\complex.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\neon\packetmath.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\neon\complex.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\arch\default\settings.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\functors.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\densecoeffsbase.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\densebase.h
+	"../plugins/BlockMethods.h"
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\blockmethods.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\matrixbase.h
+	"../plugins/CommonCwiseUnaryOps.h"
+	"../plugins/CommonCwiseBinaryOps.h"
+	"../plugins/MatrixCwiseUnaryOps.h"
+	"../plugins/MatrixCwiseBinaryOps.h"
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\commoncwiseunaryops.h
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\commoncwisebinaryops.h
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\matrixcwiseunaryops.h
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\matrixcwisebinaryops.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\eigenbase.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\core\assign.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\blasutil.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\densestorage.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\nestbyvalue.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\forcealignedaccess.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\returnbyvalue.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\noalias.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\plainobjectbase.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\matrix.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\core\array.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\cwisebinaryop.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\cwiseunaryop.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\cwisenullaryop.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\cwiseunaryview.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\selfcwisebinaryop.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\dot.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\stablenorm.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\mapbase.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\stride.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\map.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\block.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\vectorblock.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\ref.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\transpose.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\diagonalmatrix.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\diagonal.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\diagonalproduct.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\permutationmatrix.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\transpositions.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\redux.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\visitor.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\fuzzy.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\io.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\swap.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\commainitializer.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\flagged.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\productbase.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\generalproduct.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\triangularmatrix.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\selfadjointview.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalblockpanelkernel.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\parallelizer.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\coeffbasedproduct.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalmatrixvector.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalmatrixmatrix.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\solvetriangular.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalmatrixmatrixtriangular.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\selfadjointmatrixvector.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\selfadjointmatrixmatrix.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\selfadjointproduct.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\selfadjointrank2update.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularmatrixvector.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularmatrixmatrix.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularsolvermatrix.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularsolvervector.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\core\bandmatrix.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\coreiterators.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\booleanredux.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\select.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\vectorwiseop.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\random.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\replicate.h
+
+1380021692 h:\documents\rgbdvideofx\include\eigen\src\core\reverse.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\core\arraybase.h
+	"../plugins/CommonCwiseUnaryOps.h"
+	"../plugins/MatrixCwiseUnaryOps.h"
+	"../plugins/ArrayCwiseUnaryOps.h"
+	"../plugins/CommonCwiseBinaryOps.h"
+	"../plugins/MatrixCwiseBinaryOps.h"
+	"../plugins/ArrayCwiseBinaryOps.h"
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\arraycwiseunaryops.h
+
+1380021701 h:\documents\rgbdvideofx\include\eigen\src\plugins\arraycwisebinaryops.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\core\arraywrapper.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalmatrixmatrix_mkl.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalmatrixvector_mkl.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\generalmatrixmatrixtriangular_mkl.h
+
+1380021693 h:\documents\rgbdvideofx\include\eigen\src\core\products\selfadjointmatrixmatrix_mkl.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\selfadjointmatrixvector_mkl.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularmatrixmatrix_mkl.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularmatrixvector_mkl.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\products\triangularsolvermatrix_mkl.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\core\assign_mkl.h
+
+1380021691 h:\documents\rgbdvideofx\include\eigen\src\core\globalfunctions.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\core\util\reenablestupidwarnings.h
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\eigen2support
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/Eigen2Support/Macros.h"
+	"src/Eigen2Support/Memory.h"
+	"src/Eigen2Support/Meta.h"
+	"src/Eigen2Support/Lazy.h"
+	"src/Eigen2Support/Cwise.h"
+	"src/Eigen2Support/CwiseOperators.h"
+	"src/Eigen2Support/TriangularSolver.h"
+	"src/Eigen2Support/Block.h"
+	"src/Eigen2Support/VectorBlock.h"
+	"src/Eigen2Support/Minor.h"
+	"src/Eigen2Support/MathFunctions.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+	<iostream>
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\macros.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\memory.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\meta.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\lazy.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\cwise.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\cwiseoperators.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\triangularsolver.h
+
+1380021694 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\block.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\vectorblock.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\minor.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\mathfunctions.h
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\geometry
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"SVD"
+	"LU"
+	<limits>
+	"src/Geometry/OrthoMethods.h"
+	"src/Geometry/EulerAngles.h"
+	"src/Geometry/Homogeneous.h"
+	"src/Geometry/RotationBase.h"
+	"src/Geometry/Rotation2D.h"
+	"src/Geometry/Quaternion.h"
+	"src/Geometry/AngleAxis.h"
+	"src/Geometry/Transform.h"
+	"src/Geometry/Translation.h"
+	"src/Geometry/Scaling.h"
+	"src/Geometry/Hyperplane.h"
+	"src/Geometry/ParametrizedLine.h"
+	"src/Geometry/AlignedBox.h"
+	"src/Geometry/Umeyama.h"
+	"src/Geometry/arch/Geometry_SSE.h"
+	"src/Eigen2Support/Geometry/All.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\svd
+	"QR"
+	"Householder"
+	"Jacobi"
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/misc/Solve.h"
+	"src/SVD/JacobiSVD.h"
+	"src/SVD/JacobiSVD_MKL.h"
+	"src/SVD/UpperBidiagonalization.h"
+	"src/Eigen2Support/SVD.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\qr
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"Cholesky"
+	"Jacobi"
+	"Householder"
+	"src/misc/Solve.h"
+	"src/QR/HouseholderQR.h"
+	"src/QR/FullPivHouseholderQR.h"
+	"src/QR/ColPivHouseholderQR.h"
+	"src/QR/HouseholderQR_MKL.h"
+	"src/QR/ColPivHouseholderQR_MKL.h"
+	"src/Eigen2Support/QR.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+	"Eigenvalues"
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\cholesky
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/misc/Solve.h"
+	"src/Cholesky/LLT.h"
+	"src/Cholesky/LDLT.h"
+	"src/Cholesky/LLT_MKL.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021700 h:\documents\rgbdvideofx\include\eigen\src\misc\solve.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\cholesky\llt.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\cholesky\ldlt.h
+
+1380021690 h:\documents\rgbdvideofx\include\eigen\src\cholesky\llt_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+	<iostream>
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\jacobi
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/Jacobi/Jacobi.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\jacobi\jacobi.h
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\householder
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/Householder/Householder.h"
+	"src/Householder/HouseholderSequence.h"
+	"src/Householder/BlockHouseholder.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\householder\householder.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\householder\householdersequence.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\householder\blockhouseholder.h
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\qr\householderqr.h
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\qr\fullpivhouseholderqr.h
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\qr\colpivhouseholderqr.h
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\qr\householderqr_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\qr\colpivhouseholderqr_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\qr.h
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\eigenvalues
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"Cholesky"
+	"Jacobi"
+	"Householder"
+	"LU"
+	"Geometry"
+	"src/Eigenvalues/Tridiagonalization.h"
+	"src/Eigenvalues/RealSchur.h"
+	"src/Eigenvalues/EigenSolver.h"
+	"src/Eigenvalues/SelfAdjointEigenSolver.h"
+	"src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h"
+	"src/Eigenvalues/HessenbergDecomposition.h"
+	"src/Eigenvalues/ComplexSchur.h"
+	"src/Eigenvalues/ComplexEigenSolver.h"
+	"src/Eigenvalues/RealQZ.h"
+	"src/Eigenvalues/GeneralizedEigenSolver.h"
+	"src/Eigenvalues/MatrixBaseEigenvalues.h"
+	"src/Eigenvalues/RealSchur_MKL.h"
+	"src/Eigenvalues/ComplexSchur_MKL.h"
+	"src/Eigenvalues/SelfAdjointEigenSolver_MKL.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021689 h:\documents\rgbdvideofx\include\eigen\lu
+	"Core"
+	"src/Core/util/DisableStupidWarnings.h"
+	"src/misc/Solve.h"
+	"src/misc/Kernel.h"
+	"src/misc/Image.h"
+	"src/LU/FullPivLU.h"
+	"src/LU/PartialPivLU.h"
+	"src/LU/PartialPivLU_MKL.h"
+	"src/LU/Determinant.h"
+	"src/LU/Inverse.h"
+	"src/LU/arch/Inverse_SSE.h"
+	"src/Eigen2Support/LU.h"
+	"src/Core/util/ReenableStupidWarnings.h"
+
+1380021700 h:\documents\rgbdvideofx\include\eigen\src\misc\kernel.h
+
+1380021700 h:\documents\rgbdvideofx\include\eigen\src\misc\image.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\lu\fullpivlu.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\lu\partialpivlu.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\lu\partialpivlu_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\lu\determinant.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\lu\inverse.h
+
+1380021697 h:\documents\rgbdvideofx\include\eigen\src\lu\arch\inverse_sse.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\lu.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\tridiagonalization.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\realschur.h
+	"./HessenbergDecomposition.h"
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\hessenbergdecomposition.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\eigensolver.h
+	"./RealSchur.h"
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\selfadjointeigensolver.h
+	"./Tridiagonalization.h"
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\generalizedselfadjointeigensolver.h
+	"./Tridiagonalization.h"
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\complexschur.h
+	"./HessenbergDecomposition.h"
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\complexeigensolver.h
+	"./ComplexSchur.h"
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\realqz.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\generalizedeigensolver.h
+	"./RealQZ.h"
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\matrixbaseeigenvalues.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\realschur_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\complexschur_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\eigenvalues\selfadjointeigensolver_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\svd\jacobisvd.h
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\svd\jacobisvd_mkl.h
+	"Eigen/src/Core/util/MKL_support.h"
+
+1380021698 h:\documents\rgbdvideofx\include\eigen\src\svd\upperbidiagonalization.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\svd.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\orthomethods.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\eulerangles.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\homogeneous.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\rotationbase.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\rotation2d.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\quaternion.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\angleaxis.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\transform.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\translation.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\scaling.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\hyperplane.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\parametrizedline.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\alignedbox.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\umeyama.h
+
+1380021696 h:\documents\rgbdvideofx\include\eigen\src\geometry\arch\geometry_sse.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\all.h
+	<limits>
+	"RotationBase.h"
+	"Rotation2D.h"
+	"Quaternion.h"
+	"AngleAxis.h"
+	"Transform.h"
+	"Translation.h"
+	"Scaling.h"
+	"AlignedBox.h"
+	"Hyperplane.h"
+	"ParametrizedLine.h"
+	"RotationBase.h"
+	"Rotation2D.h"
+	"Quaternion.h"
+	"AngleAxis.h"
+	"Transform.h"
+	"Translation.h"
+	"Scaling.h"
+	"AlignedBox.h"
+	"Hyperplane.h"
+	"ParametrizedLine.h"
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\rotationbase.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\rotation2d.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\quaternion.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\angleaxis.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\transform.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\translation.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\scaling.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\alignedbox.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\hyperplane.h
+
+1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\parametrizedline.h
+
+1380039972 source:h:\documents\rgbdvideofx\main.cpp
+	"Main.h"
+	"VideoCapture.h"
+	"Renderer.h"
+
+1380040233 h:\documents\rgbdvideofx\main.h
+	<stdlib.h>
+	<stdio.h>
+	<windows.h>
+	<math.h>
+	<iostream>
+	<string>
+	<sstream>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<libfreenect.hpp>
+
+1380021701 h:\documents\rgbdvideofx\include\libfreenect.hpp
+	<libfreenect.h>
+	<stdexcept>
+	<sstream>
+	<map>
+	<pthread.h>
+	<libusb-1.0/libusb.h>
+
+1380021701 h:\documents\rgbdvideofx\include\libfreenect.h
+	<stdint.h>
+	<winsock.h>
+	<sys/time.h>
+
+1380021702 h:\documents\rgbdvideofx\include\pthread.h
+	<windows.h>
+	"config.h"
+	<time.h>
+	<signal.h>
+	<limits.h>
+	"need_errno.h"
+	<errno.h>
+	<sched.h>
+	<sys/types.h>
+
+1380021702 h:\documents\rgbdvideofx\include\sched.h
+	"need_errno.h"
+	<errno.h>
+	<sys/types.h>
+	<time.h>
+
+1380021701 h:\documents\rgbdvideofx\include\libusb-1.0\libusb.h
+	<unistd.h>
+	<winsock.h>
+	<stdint.h>
+	<sys/time.h>
+
+1380021688 h:\documents\rgbdvideofx\videocapture.h
+	<GL\freeglut.h>
+
+1380040002 source:h:\documents\rgbdvideofx\renderer.cpp
+	<stdlib.h>
+	<stdio.h>
+	<iostream>
+	<vector>
+	"Renderer.h"
+	"Shader.h"
+	"FrameBuffer.h"
+	"Effect.h"
+	"FogEffect.h"
+	"DOFEffect.h"
+	"RelightingEffect.h"
+	"CartoonEffect.h"
+
+1380040808 source:h:\documents\rgbdvideofx\videocapture.cpp
+	"VideoCapture.h"
+	"DepthProcessor.h"
+	<iostream>
+	<fstream>
+
+1380039801 h:\documents\rgbdvideofx\depthprocessor.h
+	"libfreenect.hpp"
+	<iostream>
+	<fstream>
+	<vector>
+	<cmath>
+	<pthread.h>
+	<stdio.h>
+	<GL\freeglut.h>
+	"NormalMapGenerator.h"
+	"Vector3.h"
+
+1380041628 h:\documents\rgbdvideofx\normalmapgenerator.h
+	<pthread.h>
+	<unistd.h>
+	<stdio.h>
+	<math.h>
+	<vector>
+	<iostream>
+	"Vector3.h"
+
+1380021688 h:\documents\rgbdvideofx\vector3.h
+	<iostream>
+
+1380040210 source:h:\documents\rgbdvideofx\shader.cpp
+	"Shader.h"
+
