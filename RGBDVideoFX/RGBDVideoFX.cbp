@@ -16,7 +16,6 @@
 					<Add directory="../include" />
 				</Compiler>
 				<Linker>
-					<Add option="-Llib" />
 					<Add library="pthreadGC2" />
 					<Add library="freenect" />
 					<Add library="glui" />
@@ -26,7 +25,7 @@
 					<Add library="glu32" />
 					<Add library="winmm" />
 					<Add directory="../lib" />
-					<Add directory="../../RGBDVideoFX" />
+					<Add directory="../../rgbd" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -97,9 +96,12 @@
 		<Unit filename="../Images/dofpro_teacupRGB.bmp" />
 		<Unit filename="../Images/house_DM.bmp" />
 		<Unit filename="../Images/house_RGB.bmp" />
+		<Unit filename="../Images/pixel_Depth.bmp" />
+		<Unit filename="../Images/pixel_RGB.bmp" />
 		<Unit filename="../Images/pumpkins_DM.bmp" />
 		<Unit filename="../Images/pumpkins_RGB.bmp" />
 		<Unit filename="../Images/teapot_colour.bmp" />
+		<Unit filename="../Images/teapot_colour_noise.bmp" />
 		<Unit filename="../Images/teapot_depth.bmp" />
 		<Unit filename="../Images/teapot_normals.bmp" />
 		<Unit filename="../Images/teapot_reflectance.bmp" />
@@ -107,6 +109,8 @@
 		<Unit filename="../Kinect.h" />
 		<Unit filename="../Main.cpp" />
 		<Unit filename="../Main.h" />
+		<Unit filename="../NormalMapGenerator.cpp" />
+		<Unit filename="../NormalMapGenerator.h" />
 		<Unit filename="../RelightingEffect.cpp" />
 		<Unit filename="../RelightingEffect.h" />
 		<Unit filename="../Renderer.cpp" />
@@ -117,12 +121,14 @@
 		<Unit filename="../VBlur.frag" />
 		<Unit filename="../depthdiscontinuity.frag" />
 		<Unit filename="../fog.frag" />
+		<Unit filename="../glew32.dll" />
 		<Unit filename="../kuwahara.frag" />
+		<Unit filename="../libfreenect.dll" />
 		<Unit filename="../passcoords.vert" />
 		<Unit filename="../phong.frag" />
 		<Unit filename="../quantization.frag" />
 		<Unit filename="../radialvalley.frag" />
-		<Unit filename="../readme.md" />
+		<Unit filename="../readme.txt" />
 		<Unit filename="../sobel.frag" />
 		<Unit filename="../texture.frag" />
 		<Extensions>

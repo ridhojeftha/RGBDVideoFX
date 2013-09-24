@@ -1,4 +1,4 @@
-
+//Change this class to DepthProcessor
 #ifndef CAPTURE_H
 #define	CAPTURE_H
 
@@ -43,6 +43,7 @@
 					float v = i/2048.0;
 					v = pow(v, 3)* 6;
 					m_gamma[i] = v*6*256;
+
 				}
 			}
 
@@ -56,18 +57,22 @@
 				m_rgb_mutex.unlock();
 			};
 
+
+			int r_depth[640*480];
 			//required callback method for the Depth data from the Kinect
 			void DepthCallback(void* _depth, uint32_t timestamp) {
 				m_depth_mutex.lock();
 
 				//The depth buffer contains a 640x480 array of 16bit (2 byte) depth values ranging from 0-2047
 				//with all values >=1024 indicating "no data" (shadows).
-				uint16_t* depth = static_cast<uint16_t*>(_depth);
+				depth = static_cast<uint16_t*>(_depth);
 
                 for( unsigned int i = 0 ; i < 640*480 ; i++) {
 
 
 					int pval = m_gamma[depth[i]]; //the physical depth value
+					r_depth[i] = int(depth[i]);
+
                     int d = 0;
 
                     if (pval<m_gamma[m_gamma.size()])
@@ -163,20 +168,23 @@
 				}
 			}
 
-			//boolean for control when a frame of depth data was received
-			bool getDepth(vector<uint8_t> &buffer) {
+			//Method returning the depth data
+			bool getDepth(vector<uint8_t> &buffer, vector<int> &rawDepth){
 				m_depth_mutex.lock();
 				//TODO: cmaybe change m_new_depth_frame and m_new_rgb_frame to one variable as we want synchronized frames
 				if(m_new_depth_frame) {
 					buffer.swap(m_buffer_depth);
 					m_new_depth_frame = false;
 					m_depth_mutex.unlock();
-					return true;
+
+					for (int i=0; i<640*480; i++)
+                        rawDepth[i] = r_depth[i];
+
 				} else {
 					m_depth_mutex.unlock();
-					return false;
 				}
 			}
+
 
 			/*void printBuffer(uint16_t* &buffer){
 
@@ -193,13 +201,15 @@
 				}
 				output.close();
 			}*/
+
+			bool m_new_depth_frame;
 		private:
 			vector<uint8_t> m_buffer_depth;
 			vector<uint8_t> m_buffer_video;
 			vector<uint16_t> m_gamma;
+			uint16_t* depth;
 			Mutex m_rgb_mutex;
 			Mutex m_depth_mutex;
 			bool m_new_rgb_frame;
-			bool m_new_depth_frame;
 	};
 #endif

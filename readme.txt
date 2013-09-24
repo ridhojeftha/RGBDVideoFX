@@ -9,4 +9,4 @@ pthread
 OpenKinect
 Eigen (pure template library)
 
-Compiler flags: -Iinclude -Llib -lpthread -lfreenect -lglui -lglew32s -lopengl32 -lfreeglut -lglu32 -lwinmm
+Compiler flags: -Iinclude -Llib -lpthread -lfreenect -lglui -lglew32s -lopengl32 -lfreeglut -lglu32 -lwinmm -std=c++0x

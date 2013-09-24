@@ -1,11 +1,15 @@
-
+//Change this class to VideoCapture
 #include "Kinect.h"
-
+#include "NormalMapGenerator.h"
+#include <iostream>
+#include <fstream>
 
 Freenect::Freenect freenect;
 Capture* device;
 double freenect_angle(0);
 freenect_video_format requested_format(FREENECT_VIDEO_RGB);
+
+    using namespace std;
 
 void updateKinect() {
 
@@ -21,10 +25,15 @@ void updateKinect() {
     //printf("\r demanded tilt angle: %+4.2f device tilt angle: %+4.2f", freenect_angle, device->getState().getTiltDegs());
     //fflush(stdout);
 
-    device->getDepth(depth);
+    vector<int> rawDepth(640*480);
+    device->getDepth(depth, rawDepth);
     device->getRGB(rgb);
 
+    //call the Normal Map Generator from here (actually call it from Capture.h)
+   // std::vector<float> normals;
 
+    //if (!rawDepth.empty())
+    //    updateNormals(rawDepth, normals);
 
     glBindTexture(GL_TEXTURE_2D, depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, &depth[0]);
