@@ -24,10 +24,11 @@
 
 1378726695 h:\documents\rgbd\include\gl\gl.h
 
-1378726693 h:\documents\rgbd\shader.h
+1380018145 h:\documents\rgbd\shader.h
 	<GL/glew.h>
 	<iostream>
 	<fstream>
+	<string>
 	<stdexcept>
 
 1378726728 h:\documents\rgbd\framebuffer.h
@@ -866,7 +867,7 @@
 	"RelightingEffect.h"
 	"CartoonEffect.h"
 
-1379915273 source:h:\documents\rgbd\shader.cpp
+1380018145 source:h:\documents\rgbd\shader.cpp
 	"Shader.h"
 
 1379985207 source:h:\documents\rgbd\normalmapgenerator.cpp

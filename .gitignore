@@ -1,4 +1,3 @@
-#Files to ignore by git#
-########################
-
-*.svn
+.svn
+obj
+bin
