@@ -1,7 +1,8 @@
 
 #include "Main.h"
-#include "Kinect.h"
+#include "VideoCapture.h"
 #include "Renderer.h"
+//#include "NormalMapGenerator.h"
 
 int main(int argc, char** argv) {
 
@@ -30,7 +31,7 @@ int main(int argc, char** argv) {
 
     if (useKinect) {
 
-        startKinect();
+        startVideoCapture();
 
     } else {
 
@@ -60,7 +61,7 @@ int main(int argc, char** argv) {
 void close() {
 
     if (useKinect) {
-        stopKinect();
+        stopVideoCapture();
     }
 
     //Dispose of openGL resources
@@ -91,7 +92,7 @@ void keyboard(unsigned char key, int x, int y) {
 void update() {
 
     if (useKinect) {
-        updateKinect();
+        updateVideoCapture();
     }
 
     if (benchmarking) {

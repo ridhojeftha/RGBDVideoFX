@@ -44,11 +44,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../Capture.h" />
 		<Unit filename="../CartoonEffect.cpp" />
 		<Unit filename="../CartoonEffect.h" />
 		<Unit filename="../DOFEffect.cpp" />
 		<Unit filename="../DOFEffect.h" />
+		<Unit filename="../DepthProcessor.h" />
 		<Unit filename="../Effect.h" />
 		<Unit filename="../FogEffect.cpp" />
 		<Unit filename="../FogEffect.h" />
@@ -105,11 +105,8 @@
 		<Unit filename="../Images/teapot_depth.bmp" />
 		<Unit filename="../Images/teapot_normals.bmp" />
 		<Unit filename="../Images/teapot_reflectance.bmp" />
-		<Unit filename="../Kinect.cpp" />
-		<Unit filename="../Kinect.h" />
 		<Unit filename="../Main.cpp" />
 		<Unit filename="../Main.h" />
-		<Unit filename="../NormalMapGenerator.cpp" />
 		<Unit filename="../NormalMapGenerator.h" />
 		<Unit filename="../RelightingEffect.cpp" />
 		<Unit filename="../RelightingEffect.h" />
@@ -119,6 +116,8 @@
 		<Unit filename="../Shader.h" />
 		<Unit filename="../VBilateral.frag" />
 		<Unit filename="../VBlur.frag" />
+		<Unit filename="../VideoCapture.cpp" />
+		<Unit filename="../VideoCapture.h" />
 		<Unit filename="../depthdiscontinuity.frag" />
 		<Unit filename="../fog.frag" />
 		<Unit filename="../glew32.dll" />

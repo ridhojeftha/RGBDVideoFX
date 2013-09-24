@@ -72,7 +72,7 @@ GLuint Shader::id() const {
 
 GLint Shader::attrib(const GLchar* attribName) const {
     if (!attribName){
-       // std::cerr << "attribName was NULL\n";
+       // std::cerr << "attribName was NULL\n";    
     }
 
     GLint attrib = glGetAttribLocation(programID, attribName);
@@ -102,21 +102,23 @@ GLuint Shader::loadShaderFile(const char *shaderFile, GLenum type) {
     std::ifstream in(shaderFile);
     std::string src = "";
     std::string line = "";
-
+    
     while (std::getline(in, line))
         src += line+"\n";
-
-    //src.resize(src.length()-1);//POSSIBLE FIX (Remove last \n)
-
+    
+    src.resize(src.length()-1);//POSSIBLE FIX (Remove last \n)
+    
     GLuint shaderID = glCreateShader(type);
 
     const char* source = src.c_str();
+    GLint shader_length = src.size();
+    glShaderSource(shaderID, 1, &source, (GLint*)&shader_length);
     glCompileShader(shaderID);
 
 
     GLint status;
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
-
+    
     if (status == GL_FALSE) {
         std::string msg("Compile failure in shader: ");
         msg.append(shaderFile);

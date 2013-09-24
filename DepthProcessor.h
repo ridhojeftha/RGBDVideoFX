@@ -1,6 +1,5 @@
-//Change this class to DepthProcessor
-#ifndef CAPTURE_H
-#define	CAPTURE_H
+#ifndef DEPTHPROCESSOR_H
+#define	DEPTHPROCESSOR_H
 
 #include "libfreenect.hpp"
 #include <iostream>
@@ -9,12 +8,9 @@
 #include <cmath>
 #include <pthread.h>
 #include <stdio.h>
-
-//#include <GL/glut.h>
-//#include <GL/gl.h>
-//#include <GL/glu.h>
-
 #include <GL\freeglut.h>
+#include "NormalMapGenerator.h"
+#include "Vector3.h"
 
 	using namespace std;
 
@@ -35,9 +31,9 @@
 	};
 
 	//FreenectDevice class to handle capturing from a Kinect
-	class Capture : public Freenect::FreenectDevice {
+	class DepthProcessor : public Freenect::FreenectDevice {
 		public:
-		Capture(freenect_context *_ctx, int _index) : Freenect::FreenectDevice(_ctx, _index), m_buffer_depth(freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_VIDEO_RGB).bytes),m_buffer_video(freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_VIDEO_RGB).bytes), m_gamma(2048), m_new_rgb_frame(false), m_new_depth_frame(false) {
+		DepthProcessor(freenect_context *_ctx, int _index) : Freenect::FreenectDevice(_ctx, _index), m_buffer_depth(freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_VIDEO_RGB).bytes),m_buffer_video(freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_VIDEO_RGB).bytes), m_gamma(2048), m_new_rgb_frame(false), m_new_depth_frame(false) {
 
 				for( unsigned int i = 0 ; i < 2048 ; i++) {
 					float v = i/2048.0;
@@ -45,35 +41,41 @@
 					m_gamma[i] = v*6*256;
 
 				}
+
+				for (int i=0; i<640*480*3; ++i){
+                    vertexMap.push_back(0.0f);
+				}
 			}
 
 			//required callback method for RGB data from the Kinect
 			void VideoCallback(void* _rgb, uint32_t timestamp) {
 				m_rgb_mutex.lock();
 				uint8_t* rgb = static_cast<uint8_t*>(_rgb);
-				//printf("receiving rgb frame\n");
+
 				copy(rgb, rgb+getVideoBufferSize(), m_buffer_video.begin());
 				m_new_rgb_frame = true;
 				m_rgb_mutex.unlock();
 			};
 
 
-			int r_depth[640*480];
 			//required callback method for the Depth data from the Kinect
 			void DepthCallback(void* _depth, uint32_t timestamp) {
 				m_depth_mutex.lock();
 
 				//The depth buffer contains a 640x480 array of 16bit (2 byte) depth values ranging from 0-2047
-				//with all values >=1024 indicating "no data" (shadows).
 				depth = static_cast<uint16_t*>(_depth);
+
+				//vertex map constants
+                static const double fx_d = 1.0 / 5.9421434211923247e+02;
+                static const double fy_d = 1.0 / 5.9104053696870778e+02;
+                static const double cx_d = 3.3930780975300314e+02;
+                static const double cy_d = 2.4273913761751615e+02;
+
 
                 for( unsigned int i = 0 ; i < 640*480 ; i++) {
 
-
 					int pval = m_gamma[depth[i]]; //the physical depth value
-					r_depth[i] = int(depth[i]);
-
-                    int d = 0;
+					int d = 0;
 
                     if (pval<m_gamma[m_gamma.size()])
                        d = 255 - (255 * pval / (m_gamma[m_gamma.size()-1])-m_gamma[0]);
@@ -81,14 +83,19 @@
                             m_buffer_depth[3*i+0] = d;
 							m_buffer_depth[3*i+1] = d;
 							m_buffer_depth[3*i+2] = d;
+
+                    //calculate the vertex map at the same time
+					float depth_mm = 0.0f;
+                    if (depth[i] < 2047){
+                        //convert to meters using Kinect's internal callibration - given by ROS
+                        depth_mm = (1.0 / (double (depth[i]) * -0.0030711016 + 3.3309495161));
+                    }
+
+                        vertexMap[3*i+0] = float((i%640 - cx_d) * depth_mm * fx_d);
+                        vertexMap[3*i+1] = float((i/640 - cy_d) * depth_mm * fy_d);
+                        vertexMap[3*i+2] = float(depth_mm);
                 }
-
-
-
-				//printf("receiving depth data\n");
-
-				//printBuffer (depth);
-				/*
+                /*
 				This snippet takes the raw depth value and maps it into a color.  The
 				values are mapped into a somewhat smooth spectrum (from near to far):
 				white, red, yellow, green, cyan, blue, black.  depth_mid[3*i + 0] is
@@ -96,19 +103,7 @@
 				+ 2] is the blue byte. This gets swapped to the depth buffer in the GL Method.
 				*/
 
-				/*
-					TODO: investigate using HSL (Hue, Saturation, Luminance) to directly map depth to colour and then transform to RGB.
-					Might be computationally faster?
-				*/
-
-				/*
-					if I need to produce the physical distance from raw Kinect values, refer to glpclview.c
-					As per nicolas page, this is way to calculate physical distance. But investigate more if needed:
-					1.0 / (double(depthValue) * -0.0030711016 + 3.3309495161)
-				*/
-
-
-				/*for( unsigned int i = 0 ; i < 640*480 ; i++) {
+                    /*for( unsigned int i = 0 ; i < 640*480 ; i++) {
 					int pval = m_gamma[depth[i]]; //the physical depth value
 					int lb = pval & 0xff;
 					switch (pval>>8) {
@@ -149,13 +144,34 @@
 							break;
 					}
 				}*/
+
+				//call NormalMapGenerator to generate normals from here
+				for( unsigned int i = 0 ; i < 640*480 ; i++) {
+
+                        //calculate indices for right and up vertex
+                        int rightIndex, upIndex;
+                        if (i%640==639){rightIndex=i;}
+                        else {rightIndex = i+1;} //vertex to the right
+
+                        if (i/640==480){upIndex=i;}
+                        else {upIndex = i+640;} //vertex above
+
+                        //pass the three vectors that need to be used
+                        Vector3 centreVert(vertexMap[3*i+0], vertexMap[3*i+1], vertexMap[3*i+2]);
+                        Vector3 rightVert(vertexMap[3*(rightIndex)+0], vertexMap[3*(rightIndex)+1], vertexMap[3*(rightIndex)+2]); //vertex at x+1
+                        Vector3 upVert(vertexMap[3*(upIndex)+0], vertexMap[3*(upIndex)+1], vertexMap[3*(upIndex)+2]); //vertex at y+1
+
+                        generateNormalMap(i, centreVert, rightVert, upVert);
+				}
+
 				m_new_depth_frame = true;
 				m_depth_mutex.unlock();
 			}
 
-			//boolean for control when a frame of RGB was received
+			//method to be called to get RGB value
 			bool getRGB(vector<uint8_t> &buffer) {
 				m_rgb_mutex.lock();
+
 				//TODO: cmaybe change m_new_depth_frame and m_new_rgb_frame to one variable as we want synchronized frames
 				if(m_new_rgb_frame) {
 					buffer.swap(m_buffer_video);
@@ -168,48 +184,30 @@
 				}
 			}
 
-			//Method returning the depth data
-			bool getDepth(vector<uint8_t> &buffer, vector<int> &rawDepth){
+			//Method to be called to get Depth value
+			bool getDepth(vector<uint8_t> &buffer){
 				m_depth_mutex.lock();
+
 				//TODO: cmaybe change m_new_depth_frame and m_new_rgb_frame to one variable as we want synchronized frames
 				if(m_new_depth_frame) {
 					buffer.swap(m_buffer_depth);
 					m_new_depth_frame = false;
 					m_depth_mutex.unlock();
-
-					for (int i=0; i<640*480; i++)
-                        rawDepth[i] = r_depth[i];
-
+					return true;
 				} else {
 					m_depth_mutex.unlock();
+					return false;
 				}
 			}
-
-
-			/*void printBuffer(uint16_t* &buffer){
-
-				ofstream output;
-				output.open ("depth.txt");
-				output << "Depth Data to be printed out\n";
-				int i = 0;
-				for( unsigned int row = 0 ; row < 480 ; row++){
-					for (unsigned int col = 0; col < 640; col++, i++){
-						output << "|" << +buffer[i];
-						cout << "printing out [" << row << "," << col << "]\n";
-					}
-					output << "~\n";
-				}
-				output.close();
-			}*/
-
-			bool m_new_depth_frame;
 		private:
 			vector<uint8_t> m_buffer_depth;
 			vector<uint8_t> m_buffer_video;
 			vector<uint16_t> m_gamma;
+			vector<float> vertexMap;
 			uint16_t* depth;
 			Mutex m_rgb_mutex;
 			Mutex m_depth_mutex;
 			bool m_new_rgb_frame;
+			bool m_new_depth_frame;
 	};
 #endif

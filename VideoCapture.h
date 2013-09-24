@@ -1,12 +1,11 @@
+#ifndef VIDEOCAPTURE_H
+#define	VIDEOCAPTURE_H
 
-#ifndef KINECT_H
-#define	KINECT_H
+#include <GL\freeglut.h>
 
-#include "Capture.h"
-
-void updateKinect();
-void startKinect();
-void stopKinect();
+void updateVideoCapture();
+void startVideoCapture();
+void stopVideoCapture();
 
 
 extern GLuint depthTexture;
@@ -17,5 +16,5 @@ extern GLuint reflectanceTexture;
 extern bool useEffects;
 extern int window;
 
-#endif	
+#endif
 

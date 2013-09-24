@@ -140,12 +140,12 @@
 	<stdint.h>
 	<sys/time.h>
 
-1378936998 source:h:\documents\rgbd\main.cpp
+1380004100 source:h:\documents\rgbd\main.cpp
 	"Main.h"
-	"Kinect.h"
+	"VideoCapture.h"
 	"Renderer.h"
 
-1379915381 h:\documents\rgbd\main.h
+1380014500 h:\documents\rgbd\main.h
 	<stdlib.h>
 	<stdio.h>
 	<windows.h>
@@ -876,6 +876,39 @@
 	<stdio.h>
 	<math.h>
 
-1379977214 h:\documents\rgbd\normalmapgenerator.h
+1380013927 h:\documents\rgbd\normalmapgenerator.h
+	<pthread.h>
+	<unistd.h>
+	<stdio.h>
+	<math.h>
 	<vector>
+	<iostream>
+	"Vector3.h"
+
+1380003945 h:\documents\rgbd\videocapture.h
+	<GL\freeglut.h>
+
+1380003369 source:h:\documents\rgbd\videocapture.cpp
+	"VideoCapture.h"
+	"DepthProcessor.h"
+	<iostream>
+	<fstream>
+
+1380013240 h:\documents\rgbd\depthprocessor.h
+	"libfreenect.hpp"
+	<iostream>
+	<fstream>
+	<vector>
+	<cmath>
+	<pthread.h>
+	<stdio.h>
+	<GL\freeglut.h>
+	"NormalMapGenerator.h"
+	"Vector3.h"
+
+1379987082 source:h:\documents\rgbd\depthprocessor.cpp
+	"DepthProcessor.h"
+
+1380013240 h:\documents\rgbd\vector3.h
+	<iostream>
 
