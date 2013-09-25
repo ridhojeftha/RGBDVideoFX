@@ -9,8 +9,9 @@ double freenect_angle(0);
 freenect_video_format requested_format(FREENECT_VIDEO_RGB);
 
 //buffers for depth and rgb
-static std::vector<uint8_t> rgb(640 * 480 * 4);
-static std::vector<uint8_t> depth(640 * 480 * 4);
+static std::vector<int> rgb(640 * 480 * 3);
+static std::vector<float> depth(640 * 480);
+static std::vector<float> normals(640*480*3);
 
     using namespace std;
 
@@ -20,16 +21,19 @@ void updateVideoCapture() {
     device->updateState();
 
     //vector<int> rawDepth(640*480);
-    device->getDepth(depth);
-    device->getRGB(rgb);
-    vector<float> normals = getNormalMap(); //basically you can call getNormalMap() from anywhere
+    //device->getDepth(depth);
+    //device->getRGB(rgb);
+
+    rgb = getRGBMap();
+    depth = getDepthMap();
+    normals = getNormalMap(); //basically you can call getNormalMap() from anywhere
 
     //Temporary GL Code
     glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_FLOAT, &normals[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, 1, 640, 480, 0, GL_LUMINANCE, GL_FLOAT, &depth[0]);
 
     glBindTexture(GL_TEXTURE_2D, colourTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, &rgb[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_FLOAT, &normals[0]);
 }
 
 //Start the Kinect device video and depth streams

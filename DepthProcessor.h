@@ -14,6 +14,9 @@
 
 	using namespace std;
 
+	static vector<float> depthMap(640*480);
+    static vector<int> rgbMap(640*480*3);
+
 	//define a FreenectDevice and a Mutex class
 	class Mutex {
 		public:
@@ -52,7 +55,8 @@
 				m_rgb_mutex.lock();
 				uint8_t* rgb = static_cast<uint8_t*>(_rgb);
 
-				copy(rgb, rgb+getVideoBufferSize(), m_buffer_video.begin());
+				copy(rgb, rgb+getVideoBufferSize(), rgbMap.begin());
+
 				m_new_rgb_frame = true;
 				m_rgb_mutex.unlock();
 			};
@@ -75,14 +79,12 @@
                 for( unsigned int i = 0 ; i < 640*480 ; i++) {
 
 					int pval = m_gamma[depth[i]]; //the physical depth value
-					int d = 0;
+					float d = 0.0;
 
                     if (pval<m_gamma[m_gamma.size()])
-                       d = 255 - (255 * pval / (m_gamma[m_gamma.size()-1])-m_gamma[0]);
+                       d = 1.0 - (1.0 * pval / (m_gamma[m_gamma.size()-1])-m_gamma[0]);
 
-                            m_buffer_depth[3*i+0] = d;
-							m_buffer_depth[3*i+1] = d;
-							m_buffer_depth[3*i+2] = d;
+                    depthMap[i] = d;
 
                     //calculate the vertex map at the same time
 					float depth_mm = 0.0f;
@@ -184,7 +186,9 @@
 				}
 			}
 
-			//Method to be called to get Depth value
+			/*
+			 * Method to get Depth in vector<uint8_t> - required by openKinect
+			 */
 			bool getDepth(vector<uint8_t> &buffer){
 				m_depth_mutex.lock();
 
@@ -199,6 +203,8 @@
 					return false;
 				}
 			}
+
+
 		private:
 			vector<uint8_t> m_buffer_depth;
 			vector<uint8_t> m_buffer_video;
@@ -210,4 +216,18 @@
 			bool m_new_rgb_frame;
 			bool m_new_depth_frame;
 	};
+
+	//DepthMap
+	    //Method to be called to get Depth Map
+    //In the range of [0;1]
+    vector<float> getDepthMap(){
+    return depthMap;
+	}
+
+	//ColourMap
+	    //Method to be called to get Normal Map
+    //In the range of [0.0 - 1.0]
+    vector<int> getRGBMap(){
+    return rgbMap;
+	}
 #endif

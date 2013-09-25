@@ -35,7 +35,7 @@ void generateNormalMap(int index, Vector3 centre_vertex, Vector3 right_vertex, V
 }
 
     //Method to be called to get Normal Map
-    //In the range of [-1;1]
+    //In the range of [0.0 - 1.0]
     vector<float> getNormalMap(){
     return normalMap;
 	}
