@@ -1700,7 +1700,7 @@
 	"VideoCapture.h"
 	"Renderer.h"
 
-1380040233 h:\documents\rgbdvideofx\main.h
+1380187145 h:\documents\rgbdvideofx\main.h
 	<stdlib.h>
 	<stdio.h>
 	<windows.h>
@@ -1771,7 +1771,7 @@
 	<iostream>
 	<fstream>
 
-1380141942 h:\documents\rgbdvideofx\depthprocessor.h
+1380280186 h:\documents\rgbdvideofx\depthprocessor.h
 	"libfreenect.hpp"
 	<iostream>
 	<fstream>
@@ -1782,6 +1782,7 @@
 	<GL\freeglut.h>
 	"NormalMapGenerator.h"
 	"Vector3.h"
+	"PixelFilter.h"
 
 1380124554 h:\documents\rgbdvideofx\normalmapgenerator.h
 	<pthread.h>
@@ -1797,4 +1798,8 @@
 
 1380040210 source:h:\documents\rgbdvideofx\shader.cpp
 	"Shader.h"
+
+1380279936 h:\documents\rgbdvideofx\pixelfilter.h
+	<math.h>
+	<cmath>
 

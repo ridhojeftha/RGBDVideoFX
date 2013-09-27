@@ -107,6 +107,7 @@
 		<Unit filename="Main.cpp" />
 		<Unit filename="Main.h" />
 		<Unit filename="NormalMapGenerator.h" />
+		<Unit filename="PixelFilter.h" />
 		<Unit filename="RelightingEffect.cpp" />
 		<Unit filename="RelightingEffect.h" />
 		<Unit filename="Renderer.cpp" />
