@@ -76,6 +76,8 @@
                 static const double cx_d = 3.3930780975300314e+02;
                 static const double cy_d = 2.4273913761751615e+02;
 
+
+               #pragma omp parallel for
                 for( unsigned int i = 0 ; i < 640*480 ; i++) {
                     //fill holes in the depth values
                     //uint16_t filteredDepth = depth[i];
@@ -84,7 +86,7 @@
                         depth[i] = filterPixel(i, depth);
                         //depth[i] = filteredDepth;
                         //std::cout << "changed from 2047 to " << filteredDepth << std::endl;
-                }
+                    }
 
 
 					int pval = m_gamma[depth[i]]; //the physical depth value
@@ -157,6 +159,7 @@
 				}*/
 
 				//call NormalMapGenerator to generate normals from here
+				#pragma omp parallel for
 				for( unsigned int i = 0 ; i < 640*480 ; i++) {
 
                         //calculate indices for right and up vertex
