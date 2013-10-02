@@ -12,10 +12,12 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-O1" />
 					<Add option="-g" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
+					<Add option="-fopenmp" />
 					<Add library="pthreadGC2" />
 					<Add library="freenect" />
 					<Add library="glui" />

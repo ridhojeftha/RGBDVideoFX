@@ -83,7 +83,7 @@
                     //uint16_t filteredDepth = depth[i];
                     if (depth[i]>=2047){
                         //filter this pixel
-                        depth[i] = filterPixel(i, depth);
+                        depth[i] = filterPixel(i, depth, 0);
                         //depth[i] = filteredDepth;
                         //std::cout << "changed from 2047 to " << filteredDepth << std::endl;
                     }
