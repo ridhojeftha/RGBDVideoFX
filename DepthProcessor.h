@@ -1,3 +1,7 @@
+/**
+ * RGBDVideoFX - methods that process Depth
+ * ridhojeftha
+ */
 #ifndef DEPTHPROCESSOR_H
 #define	DEPTHPROCESSOR_H
 
@@ -15,10 +19,13 @@
 
 	using namespace std;
 
+    //Maps available publicly
 	static vector<float> depthMap(640*480);
     static vector<int> rgbMap(640*480*3);
+    static vector<int> depthMapRGB(640*480*3);
+    bool colourDepthMap = false;
 
-	//define a FreenectDevice and a Mutex class
+	//define a FreenectDevice and a Mutex class (requirement libfreenect)
 	class Mutex {
 		public:
 			Mutex() {
@@ -43,7 +50,6 @@
 					float v = i/2048.0;
 					v = pow(v, 3)* 6;
 					m_gamma[i] = v*6*256;
-
 				}
 
 				for (int i=0; i<640*480*3; ++i){
@@ -76,18 +82,13 @@
                 static const double cx_d = 3.3930780975300314e+02;
                 static const double cy_d = 2.4273913761751615e+02;
 
-
+                //run for each pixel
                #pragma omp parallel for
                 for( unsigned int i = 0 ; i < 640*480 ; i++) {
-                    //fill holes in the depth values
-                    //uint16_t filteredDepth = depth[i];
-                    if (depth[i]>=2047){
-                        //filter this pixel
-                        depth[i] = filterPixel(i, depth, 0);
-                        //depth[i] = filteredDepth;
-                        //std::cout << "changed from 2047 to " << filteredDepth << std::endl;
-                    }
 
+                    //fill holes in the depth values
+                    if (depth[i]>=2047)
+                        depth[i] = filterPixel(i, depth, 0);
 
 					int pval = m_gamma[depth[i]]; //the physical depth value
 					float d = 0.0;
@@ -108,55 +109,53 @@
                         vertexMap[3*i+1] = float((i/640 - cy_d) * depth_mm * fy_d);
                         vertexMap[3*i+2] = float(depth_mm);
                 }
-                /*
-				This snippet takes the raw depth value and maps it into a color.  The
-				values are mapped into a somewhat smooth spectrum (from near to far):
-				white, red, yellow, green, cyan, blue, black.  depth_mid[3*i + 0] is
-				the red byte, depth_mid[3*i + 1] is the green byte, and depth_mid[3*i
-				+ 2] is the blue byte. This gets swapped to the depth buffer in the GL Method.
-				*/
 
-                    /*for( unsigned int i = 0 ; i < 640*480 ; i++) {
-					int pval = m_gamma[depth[i]]; //the physical depth value
-					int lb = pval & 0xff;
-					switch (pval>>8) {
-						case 0:
-							m_buffer_depth[3*i+0] = 255;
-							m_buffer_depth[3*i+1] = 255-lb;
-							m_buffer_depth[3*i+2] = 255-lb;
-							break;
-						case 1:
-							m_buffer_depth[3*i+0] = 255;
-							m_buffer_depth[3*i+1] = lb;
-							m_buffer_depth[3*i+2] = 0;
-							break;
-						case 2:
-							m_buffer_depth[3*i+0] = 255-lb;
-							m_buffer_depth[3*i+1] = 255;
-							m_buffer_depth[3*i+2] = 0;
-							break;
-						case 3:
-							m_buffer_depth[3*i+0] = 0;
-							m_buffer_depth[3*i+1] = 255;
-							m_buffer_depth[3*i+2] = lb;
-							break;
-						case 4:
-							m_buffer_depth[3*i+0] = 0;
-							m_buffer_depth[3*i+1] = 255-lb;
-							m_buffer_depth[3*i+2] = 255;
-							break;
-						case 5:
-							m_buffer_depth[3*i+0] = 0;
-							m_buffer_depth[3*i+1] = 0;
-							m_buffer_depth[3*i+2] = 255-lb;
-							break;
-						default:
-							m_buffer_depth[3*i+0] = 0;
-							m_buffer_depth[3*i+1] = 0;
-							m_buffer_depth[3*i+2] = 0;
-							break;
-					}
-				}*/
+				//Map depth value into a color.  The values are mapped into a somewhat smooth spectrum
+				// (from near to far): white, red, yellow, green, cyan, blue, black.
+
+                if (colourDepthMap)
+                    for( unsigned int i = 0 ; i < 640*480 ; i++) {
+                        int pval = m_gamma[depth[i]]; //the physical depth value
+                        int lb = pval & 0xff;
+
+                        switch (pval>>8) {
+                            case 0:
+                                depthMapRGB[3*i+0] = 255;
+                                depthMapRGB[3*i+1] = 255-lb;
+                                depthMapRGB[3*i+2] = 255-lb;
+                                break;
+                            case 1:
+                                depthMapRGB[3*i+0] = 255;
+                                depthMapRGB[3*i+1] = lb;
+                                depthMapRGB[3*i+2] = 0;
+                                break;
+                            case 2:
+                                depthMapRGB[3*i+0] = 255-lb;
+                                depthMapRGB[3*i+1] = 255;
+                                depthMapRGB[3*i+2] = 0;
+                                break;
+                            case 3:
+                                depthMapRGB[3*i+0] = 0;
+                                depthMapRGB[3*i+1] = 255;
+                                depthMapRGB[3*i+2] = lb;
+                                break;
+                            case 4:
+                                depthMapRGB[3*i+0] = 0;
+                                depthMapRGB[3*i+1] = 255-lb;
+                                depthMapRGB[3*i+2] = 255;
+                                break;
+                            case 5:
+                                depthMapRGB[3*i+0] = 0;
+                                depthMapRGB[3*i+1] = 0;
+                                depthMapRGB[3*i+2] = 255-lb;
+                                break;
+                            default:
+                                depthMapRGB[3*i+0] = 0;
+                                depthMapRGB[3*i+1] = 0;
+                                depthMapRGB[3*i+2] = 0;
+                                break;
+                        }
+				}
 
 				//call NormalMapGenerator to generate normals from here
 				#pragma omp parallel for
@@ -184,7 +183,7 @@
 
 			//method to be called to get RGB value
 			bool getRGB(vector<uint8_t> &buffer) {
-				m_rgb_mutex.lock();
+				/*m_rgb_mutex.lock();
 
 				//TODO: cmaybe change m_new_depth_frame and m_new_rgb_frame to one variable as we want synchronized frames
 				if(m_new_rgb_frame) {
@@ -195,14 +194,14 @@
 				} else {
 					m_rgb_mutex.unlock();
 					return false;
-				}
+				}*/
 			}
 
 			/*
-			 * Method to get Depth in vector<uint8_t> - required by openKinect
+			 * Method to get the colour depth map - required by openKinect
 			 */
 			bool getDepth(vector<uint8_t> &buffer){
-				m_depth_mutex.lock();
+				/*m_depth_mutex.lock();
 
 				//TODO: cmaybe change m_new_depth_frame and m_new_rgb_frame to one variable as we want synchronized frames
 				if(m_new_depth_frame) {
@@ -213,7 +212,7 @@
 				} else {
 					m_depth_mutex.unlock();
 					return false;
-				}
+				}*/
 			}
 
 
@@ -242,4 +241,11 @@
     vector<int> getRGBMap(){
     return rgbMap;
 	}
+
+	//ColourDepthMap
+        //Method to be called to get Colour Depth Map
+    vector<int> getColourDepthMap(){
+    return depthMapRGB;
+    }
+
 #endif
