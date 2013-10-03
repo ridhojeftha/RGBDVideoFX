@@ -1,3 +1,7 @@
+/**
+ * RGBDVideoFX - Methods that generate Normal Maps
+ * ridhojeftha
+ */
 #ifndef NORMALMAPGENERATOR_H
 #define NORMALMAPGENERATOR_H
 extern "C"

@@ -1,3 +1,7 @@
+/**
+ * RGBDVideoFX - Class that deals with Kinect hardware
+ * ridhojeftha
+ */
 #ifndef VIDEOCAPTURE_H
 #define	VIDEOCAPTURE_H
 

@@ -113,7 +113,8 @@
 				//Map depth value into a color.  The values are mapped into a somewhat smooth spectrum
 				// (from near to far): white, red, yellow, green, cyan, blue, black.
 
-                if (colourDepthMap)
+                if (colourDepthMap){
+                    #pragma omp parallel for
                     for( unsigned int i = 0 ; i < 640*480 ; i++) {
                         int pval = m_gamma[depth[i]]; //the physical depth value
                         int lb = pval & 0xff;
@@ -155,7 +156,8 @@
                                 depthMapRGB[3*i+2] = 0;
                                 break;
                         }
-				}
+                    }
+                }
 
 				//call NormalMapGenerator to generate normals from here
 				#pragma omp parallel for

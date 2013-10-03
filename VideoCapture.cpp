@@ -1,3 +1,7 @@
+/**
+ * RGBDVideoFX - Class that deals with Kinect hardware
+ * ridhojeftha
+ */
 #include "VideoCapture.h"
 #include "DepthProcessor.h"
 #include <iostream>
@@ -20,12 +24,8 @@ void updateVideoCapture() {
     //Update the device
     device->updateState();
 
-    //vector<int> rawDepth(640*480);
-    //device->getDepth(depth);
-    //device->getRGB(rgb);
-
     rgb = getRGBMap();
-    depth = getDepthMap();
+    depth = getDepthMap() /*getColourDepthMap()*/;
     normals = getNormalMap(); //basically you can call getNormalMap() from anywhere
 
     //Temporary GL Code
@@ -44,6 +44,7 @@ void startVideoCapture() {
 
     std::cout << "Starting device...\n";
     fflush(stdout);
+    device->setLed(LED_BLINK_RED_YELLOW);
     device->startVideo();
     std::cout << "Video stream started.\n";
     device->startDepth();

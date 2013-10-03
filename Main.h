@@ -28,7 +28,7 @@ extern int window;
 
 //CHANGE THESE
 bool useKinect=true;
-bool useEffects=false;
+bool useEffects=true;
 
 int frameCounter=0;
 bool benchmarking=false;

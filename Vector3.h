@@ -1,3 +1,7 @@
+/**
+ * RGBDVideoFX - Helper class, Vector3
+ * ridhojeftha
+ */
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
@@ -77,10 +81,6 @@ public:
 		return Vector3(x,y,z);
 	}
 
-	float dotVector3D(const Vector3& vec) const
-	{
-		return x * vec.x + y * vec.y + z * vec.z;
-	}
 	Vector3 cross(const Vector3& vec){
 
 		return Vector3(	(y*vec.z)-(vec.y*z),
