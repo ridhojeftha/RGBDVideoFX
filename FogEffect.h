@@ -11,13 +11,21 @@ public:
     void display();
 
     float fogDensity;
+    float fogAmount;
     float fogColourRed;
     float fogColourGreen;
     float fogColourBlue;
+    
+    int  preblurFilterPasses;
+    int preblurKernelSize;
+    float preblurSigma;
 
 private:
-
+    
+Shader* preblurHShader;
+Shader* preblurVShader;
     Shader* fogShader;
+          FrameBuffer* intermdiateBuffer;
 
 };
 

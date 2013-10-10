@@ -11,16 +11,28 @@ public:
     
     void display();
     
+    float distributionSigma;
+    int sampleRadius;
     float lensDiameter;
     float focalLength;
     float focalPlaneDepth;
-    float intensity;
+
     
+           int  preblurFilterPasses;
+    int preblurKernelSize;
+    float preblurSigma;
+
 private:
+    
+Shader* preblurHShader;
+Shader* preblurVShader;
 
     Shader* HBlurShader;
     Shader* VBlurShader;
+    Shader* testShader;
+      Shader* blendShader;
     FrameBuffer* intermdiateBuffer;
+        FrameBuffer* blurredBuffer;
 
 };
 

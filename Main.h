@@ -13,6 +13,7 @@
 
 #define GLEW_STATIC
 #include <GL/glew.h>
+#include <GL/wglew.h>
 #include <GL/freeglut.h>
 #include <libfreenect.hpp>
 
@@ -41,9 +42,8 @@ void keyboard(unsigned char key, int x, int y);
 void update();
 void close();
 void idle();
+
 void loadTextureFiles();
-
-
 
 #endif
 

@@ -10,13 +10,16 @@ int main(int argc, char** argv) {
     if (useKinect) {
         inputWidth = 640;
         inputHeight = 480;
+
+
     } else {
         inputWidth = 720;
         inputHeight = 540;
 
-      //  inputWidth=1000;
-      //  inputHeight=1000;
+        //  inputWidth=1000;
+        //  inputHeight=1000;
     }
+
 
 
     //Intialise window and effects
@@ -29,6 +32,7 @@ int main(int argc, char** argv) {
     }
 
 
+
     if (useKinect) {
 
         startVideoCapture();
@@ -37,14 +41,13 @@ int main(int argc, char** argv) {
 
         loadTextureFiles();
 
-        glBindTexture(GL_TEXTURE_2D, colourTexture);
-        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &inputWidth);
-        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &inputHeight);
+        //  glBindTexture(GL_TEXTURE_2D, colourTexture);
+        //  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &inputWidth);
+        //  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &inputHeight);
 
     }
 
-
-
+    wglSwapIntervalEXT(0);
 
     //Bind window callback functions
     glutCloseFunc(&close);
@@ -97,12 +100,16 @@ void update() {
 
     if (benchmarking) {
         float milliseconds = timeGetTime() - startTime;
+        std::ostringstream ss;
+        ss << "RGBD - Benchmarking: " << floor(milliseconds / 1000.0);
+        std::string s(ss.str());
+        glutSetWindowTitle(s.c_str());
 
-        if (milliseconds >= 10000) {
+        if (milliseconds >= 300000.0) {
             //Print performance
             std::cout << "Frames: " << frameCounter << "\n";
             std::cout << "Time: " << milliseconds << "ms\n";
-            std::cout << "FPS: " << frameCounter / (milliseconds / 1000) << "\n";
+            std::cout << "FPS: " << frameCounter / (milliseconds / 1000.0) << "\n";
             benchmarking = false;
         }
     } else {
@@ -146,36 +153,39 @@ void loadTextureFiles() {
 
 
     //Load textures from files
-    loadBMP("Images/teapot_normals.bmp", normalTexture);
     loadBMP("Images/teapot_reflectance.bmp", reflectanceTexture);
-
-  //  loadBMP("Images/pixel_RGB.bmp", colourTexture);
-  // loadBMP("Images/pixel_Depth.bmp", depthTexture);
+    loadBMP("Images/teapot_normals.bmp", normalTexture);
 
 
-   //loadBMP("Images/teapot_colour.bmp", colourTexture);
+    //   loadBMP("Images/pixel_RGB.bmp", colourTexture);
+    // loadBMP("Images/pixel_Depth.bmp", depthTexture);
 
-  //  loadBMP("Images/teapot_colour_noise.bmp", colourTexture);
- //     loadBMP("Images/teapot_depth.bmp", depthTexture);
+    // loadBMP("Images/teapot_colour_noise.bmp", colourTexture);
+
+    //  loadBMP("Images/teapot_colour.bmp", colourTexture);
+
+
+    //loadBMP("Images/teapot_colour_white.bmp", colourTexture);
+    //   loadBMP("Images/teapot_depth.bmp", depthTexture);
 
     //   loadBMP("Images/dofpro_billiardsRGB.bmp", colourTexture);
     //  loadBMP("Images/dofpro_billiardsDM.bmp", depthTexture);
 
 
-        loadBMP("Images/dofpro_diet_pepsiRGB.bmp", colourTexture);
-      loadBMP("Images/dofpro_diet_pepsiDM.bmp", depthTexture);
+    //    loadBMP("Images/dofpro_diet_pepsiRGB.bmp", colourTexture);
+    //    loadBMP("Images/dofpro_diet_pepsiDM.bmp", depthTexture);
 
-  //  loadBMP("Images/dofpro_teacupRGB.bmp", colourTexture);
-  //  loadBMP("Images/dofpro_teacupDM.bmp", depthTexture);
+    loadBMP("Images/dofpro_teacupRGB.bmp", colourTexture);
+    loadBMP("Images/dofpro_teacupDM.bmp", depthTexture);
 
-    // loadBMP("Images/dofpro_chessRGB.bmp", colourTexture);
-    // loadBMP("Images/dofpro_chessDM.bmp", depthTexture);
+    //   loadBMP("Images/dofpro_chessRGB.bmp", colourTexture);
+    //   loadBMP("Images/dofpro_chessDM.bmp", depthTexture);
 
-    // loadBMP("Images/dofpro_chairsRGB.bmp", colourTexture);
-    //  loadBMP("Images/dofpro_chairsDM.bmp", depthTexture);
+    //   loadBMP("Images/dofpro_chairsRGB.bmp", colourTexture);
+    //     loadBMP("Images/dofpro_chairsDM.bmp", depthTexture);
 
-    //   loadBMP("Images/bird_RGB.bmp", colourTexture);
-    //   loadBMP("Images/bird_DM.bmp", depthTexture);
+    //    loadBMP("Images/bird_RGB.bmp", colourTexture);
+    //    loadBMP("Images/bird_DM.bmp", depthTexture);
 
     //  loadBMP("Images/child_RGB.bmp", colourTexture);
     // loadBMP("Images/child_DM.bmp", depthTexture);

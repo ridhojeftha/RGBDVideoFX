@@ -4,7 +4,8 @@
  */
 #ifndef VIDEOCAPTURE_H
 #define	VIDEOCAPTURE_H
-
+#define GLEW_STATIC
+#include "GL/glew.h"
 #include <GL\freeglut.h>
 
 void updateVideoCapture();

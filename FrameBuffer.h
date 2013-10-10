@@ -12,7 +12,7 @@
 class FrameBuffer
 {
     public:
-        FrameBuffer(int width, int height);
+        FrameBuffer(int width, int height, GLint channels);
         virtual ~FrameBuffer();
         GLuint texture() const;
         GLuint fbo() const;

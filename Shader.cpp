@@ -1,15 +1,21 @@
 #include "Shader.h"
 
+
+
 Shader::Shader(const char *fragFile) :
 programID(0) {
 
     //create the program object
+    
+    
     programID = glCreateProgram();
     if (programID == 0)
         throw std::runtime_error("glCreateProgram failed");
 
     //Load shaders
-    GLuint vert = loadShaderFile("passcoords.vert", GL_VERTEX_SHADER);
+
+   GLuint vert = loadShaderFile("passCoords.vert", GL_VERTEX_SHADER);
+
     GLuint frag = loadShaderFile(fragFile, GL_FRAGMENT_SHADER);
 
     //attach all the shaders
@@ -56,6 +62,7 @@ programID(0) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+ 
 }
 
 Shader::~Shader() {
@@ -103,14 +110,21 @@ GLuint Shader::loadShaderFile(const char *shaderFile, GLenum type) {
     std::string src = "";
     std::string line = "";
 
-    if (in.is_open())
-        while (std::getline(in, line)){
+    
+    if (in.is_open()){
+        while (std::getline(in,line)){
             src += line+"\n";
         }
-    else
+    }else{
         std::cout << "Can't open file.\n";
-    //src.resize(src.length()-1);//POSSIBLE FIX (Remove last \n)
+    }
+   
+    
 
+
+
+    
+    
     GLuint shaderID = glCreateShader(type);
 
     const char* source = src.c_str();
@@ -139,7 +153,6 @@ GLuint Shader::loadShaderFile(const char *shaderFile, GLenum type) {
         throw std::runtime_error(msg);
     }
 
-
-
-    return shaderID;
+ 
+   return shaderID;
 }

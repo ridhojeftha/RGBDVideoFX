@@ -16,12 +16,20 @@ public:
     float * lightAmbient;
     float * lightDiffuse;
     float * lightSpecular;
-    float specularPower;
+    float shininess;
     int relightingBase;
 
+    int bilateralFilterPasses;
+    int bilateralKernelSize;
+    float bilateralSigma;
+
 private:
+    Shader* HBilateralShader;
+     Shader* VBilateralShader;
 
     Shader* phongShader;
+    
+      FrameBuffer* intermdiateBuffer;
 
 };
 

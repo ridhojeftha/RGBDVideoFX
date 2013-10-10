@@ -18,7 +18,7 @@ public:
 
     int kuwaharaFilterPasses;
     int kuwaharaKernelSize;
-    float kuwaharaSigma;
+
 
 
     int edgeMethod;

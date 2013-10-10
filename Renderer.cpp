@@ -11,12 +11,13 @@
 #include "DOFEffect.h"
 #include "RelightingEffect.h"
 #include "CartoonEffect.h"
+#include "MapEffect.h"
 
 
 int window = -1;
 GLUI *glui = NULL;
 
-int selectedEffect = 1;
+int selectedEffect = 0;
 
 int screenWidth = 0;
 int screenHeight = 0;
@@ -29,14 +30,18 @@ GLuint depthTexture = 0;
 GLuint normalTexture = 0;
 GLuint reflectanceTexture = 0;
 
+float nearPlane = 200;
+float farPlane = 1000;
+int adaptiveDepthRange=1;
+
 GLuint quadVAO = 0;
 GLuint quadVBO = 0;
-
 
 FogEffect * fogEffect = NULL;
 DOFEffect * dofEffect = NULL;
 RelightingEffect * relightingEffect = NULL;
 CartoonEffect * cartoonEffect = NULL;
+MapEffect * mapEffect = NULL;
 
 //Initialise the renderer and window
 
@@ -50,9 +55,8 @@ void initRenderer(int argc, char** argv, int w, int h) {
         glutInit(&argc, argv);
 
         glutInitWindowSize(screenWidth, screenHeight);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
         window = glutCreateWindow("RGBD - Waiting for Kinect...");
-
 
         glewInit();
 
@@ -61,15 +65,17 @@ void initRenderer(int argc, char** argv, int w, int h) {
         normalTexture = createTexture();
         reflectanceTexture = createTexture();
 
-        createQuad();
 
+        createQuads();
 
         fogEffect = new FogEffect();
         dofEffect = new DOFEffect();
         relightingEffect = new RelightingEffect();
         cartoonEffect = new CartoonEffect();
+        mapEffect = new MapEffect();
 
         createInterface();
+
 
     } else {
 
@@ -81,14 +87,8 @@ void initRenderer(int argc, char** argv, int w, int h) {
 
         window = glutCreateWindow("RGBD - Test Maps");
 
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClearDepth(1.0);
-        glDepthFunc(GL_LESS);
-        glDisable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glShadeModel(GL_SMOOTH);
+        glewInit();
+      
 
         glGenTextures(1, &depthTexture);
         glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -101,7 +101,7 @@ void initRenderer(int argc, char** argv, int w, int h) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
         glGenTextures(1, &normalTexture);
-        glBindTexture(GL_TEXTURE_2D, colourTexture);
+        glBindTexture(GL_TEXTURE_2D, normalTexture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
@@ -121,15 +121,18 @@ void displayEffects() {
 
     switch (selectedEffect) {
         case 0:
-            fogEffect->display();
+            mapEffect->display();
             break;
         case 1:
-            dofEffect->display();
+            fogEffect->display();
             break;
         case 2:
-            relightingEffect->display();
+            dofEffect->display();
             break;
         case 3:
+            relightingEffect->display();
+            break;
+        case 4:
             cartoonEffect->display();
             break;
     }
@@ -146,10 +149,29 @@ void createInterface() {
     //Effect Selection
     GLUI_Panel *effectSelectionPanel = glui->add_panel("Effect");
     GLUI_RadioGroup *effectRadioGroup = glui->add_radiogroup_to_panel(effectSelectionPanel, &selectedEffect, -1, gluiCallback);
+    glui->add_radiobutton_to_group(effectRadioGroup, "Maps");
     glui->add_radiobutton_to_group(effectRadioGroup, "Fog");
     glui->add_radiobutton_to_group(effectRadioGroup, "Depth of Field");
     glui->add_radiobutton_to_group(effectRadioGroup, "Relighting");
     glui->add_radiobutton_to_group(effectRadioGroup, "Cartoon Shading");
+
+    //Depth range
+    glui->add_statictext("");
+    GLUI_Panel *depthRangePanel = glui->add_panel("Depth Range");
+    GLUI_Checkbox *adaptiveDepthRangeCheckBox = glui->add_checkbox_to_panel(depthRangePanel, "Adaptive ", &adaptiveDepthRange, -1, gluiCallback);
+    GLUI_Spinner *nearPlaneSpinner = glui->add_spinner_to_panel(depthRangePanel, "Near Plane ", GLUI_SPINNER_FLOAT, &nearPlane, -1, gluiCallback);
+    nearPlaneSpinner->set_float_limits(10, 2000);
+    GLUI_Spinner *farPlaneSpinner = glui->add_spinner_to_panel(depthRangePanel, "Far Plane ", GLUI_SPINNER_FLOAT, &farPlane, -1, gluiCallback);
+    farPlaneSpinner->set_float_limits(10, 2000);
+
+    //View maps
+    GLUI_Rollout *mapRollout = glui->add_rollout("Maps", 0);
+    mapRollout->set_w(218);
+    glui->add_statictext_to_panel(mapRollout, "")->set_w(200);
+    GLUI_RadioGroup *mapRadioGroup = glui->add_radiogroup_to_panel(mapRollout, &mapEffect->selectedMap, -1, gluiCallback);
+    glui->add_radiobutton_to_group(mapRadioGroup, "Colour");
+    glui->add_radiobutton_to_group(mapRadioGroup, "Depth");
+    glui->add_radiobutton_to_group(mapRadioGroup, "Normals");
 
 
     //FOG
@@ -157,7 +179,20 @@ void createInterface() {
     fogRollout->set_w(218);
     glui->add_statictext_to_panel(fogRollout, "")->set_w(200);
     GLUI_Spinner *fogDensitySpinner = glui->add_spinner_to_panel(fogRollout, "Density ", GLUI_SPINNER_FLOAT, &fogEffect->fogDensity, -1, gluiCallback);
-    fogDensitySpinner->set_float_limits(0.0, 1);
+    fogDensitySpinner->set_float_limits(0.0, 20.0);
+    GLUI_Spinner *fogAmountSpinner = glui->add_spinner_to_panel(fogRollout, "Amount ", GLUI_SPINNER_FLOAT, &fogEffect->fogAmount, -1, gluiCallback);
+    fogAmountSpinner->set_float_limits(0.0, 1);
+    
+    glui->add_statictext_to_panel(fogRollout, "");
+    GLUI_Panel* fogPreblurPanel = glui->add_panel_to_panel(fogRollout, "Preblur");
+
+    GLUI_Spinner *fogPreblurPassesSpinner = glui->add_spinner_to_panel(fogPreblurPanel, "Filter Passes ", GLUI_SPINNER_INT, &fogEffect->preblurFilterPasses, -1, gluiCallback);
+    fogPreblurPassesSpinner->set_int_limits(0, 10);
+    GLUI_Spinner *fogPreblurKernelSizeSpinner = glui->add_spinner_to_panel(fogPreblurPanel, "Kernel Size ", GLUI_SPINNER_INT, &fogEffect->preblurKernelSize, -1, gluiCallback);
+    fogPreblurKernelSizeSpinner->set_int_limits(1, 100);
+    GLUI_Spinner *fogPreblurSigmaSpinner = glui->add_spinner_to_panel(fogPreblurPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &fogEffect->preblurSigma, -1, gluiCallback);
+    fogPreblurSigmaSpinner->set_float_limits(0.001, 0.15);
+    
 
     glui->add_statictext_to_panel(fogRollout, "");
     GLUI_Panel* fogColourPanel = glui->add_panel_to_panel(fogRollout, "Colour", GLUI_PANEL_EMBOSSED);
@@ -175,15 +210,29 @@ void createInterface() {
     DOFRollout->set_w(218);
     glui->add_statictext_to_panel(DOFRollout, "")->set_w(200);
 
+    GLUI_Spinner *distributionSigmaSpinner = glui->add_spinner_to_panel(DOFRollout, "Sample Deviation ", GLUI_SPINNER_FLOAT, &dofEffect->distributionSigma, -1, gluiCallback);
+    distributionSigmaSpinner->set_float_limits(0.001, 0.15);
+    GLUI_Spinner *sampleRadiusSpinner = glui->add_spinner_to_panel(DOFRollout, "Sample Radius ", GLUI_SPINNER_INT, &dofEffect->sampleRadius, -1, gluiCallback);
+    sampleRadiusSpinner->set_int_limits(1, 40);
+
+
     GLUI_Spinner *lensDiameterSpinner = glui->add_spinner_to_panel(DOFRollout, "Aperture Size ", GLUI_SPINNER_FLOAT, &dofEffect->lensDiameter, -1, gluiCallback);
-    lensDiameterSpinner->set_float_limits(0, 25);
+    lensDiameterSpinner->set_float_limits(0.001, 1);
     GLUI_Spinner *focalLengthSpinner = glui->add_spinner_to_panel(DOFRollout, "Focal Length ", GLUI_SPINNER_FLOAT, &dofEffect->focalLength, -1, gluiCallback);
-    focalLengthSpinner->set_float_limits(0.0, 10);
+    focalLengthSpinner->set_float_limits(0.001, 1);
     GLUI_Spinner *focalDepthSpinner = glui->add_spinner_to_panel(DOFRollout, "Focal Depth ", GLUI_SPINNER_FLOAT, &dofEffect->focalPlaneDepth, -1, gluiCallback);
     focalDepthSpinner->set_float_limits(0.0, 1);
-    GLUI_Spinner *intensitySpinner = glui->add_spinner_to_panel(DOFRollout, "Intensity ", GLUI_SPINNER_FLOAT, &dofEffect->intensity, -1, gluiCallback);
-    intensitySpinner->set_float_limits(0.0, 10);
 
+        glui->add_statictext_to_panel(DOFRollout, "");
+    GLUI_Panel* DOFPreblurPanel = glui->add_panel_to_panel(DOFRollout, "Preblur");
+
+    GLUI_Spinner *DOFPreblurPassesSpinner = glui->add_spinner_to_panel(DOFPreblurPanel, "Filter Passes ", GLUI_SPINNER_INT, &dofEffect->preblurFilterPasses, -1, gluiCallback);
+    DOFPreblurPassesSpinner->set_int_limits(0, 10);
+    GLUI_Spinner *DOFPreblurKernelSizeSpinner = glui->add_spinner_to_panel(DOFPreblurPanel, "Kernel Size ", GLUI_SPINNER_INT, &dofEffect->preblurKernelSize, -1, gluiCallback);
+    DOFPreblurKernelSizeSpinner->set_int_limits(1, 100);
+    GLUI_Spinner *DOFPreblurSigmaSpinner = glui->add_spinner_to_panel(DOFPreblurPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &dofEffect->preblurSigma, -1, gluiCallback);
+    DOFPreblurSigmaSpinner->set_float_limits(0.001, 0.15);
+    
 
     //Relighting
     GLUI_Rollout *relightingRollout = glui->add_rollout("Relighting", 0);
@@ -196,6 +245,18 @@ void createInterface() {
     GLUI_RadioGroup *relightingBaseRadioGroup = glui->add_radiogroup_to_panel(relightingBasePanel, &relightingEffect->relightingBase, -1, gluiCallback);
     glui->add_radiobutton_to_group(relightingBaseRadioGroup, "Colour");
     glui->add_radiobutton_to_group(relightingBaseRadioGroup, "Reflectance");
+
+    //Bilateral.
+    glui->add_statictext_to_panel(relightingRollout, "");
+    GLUI_Panel* bilateralPanel = glui->add_panel_to_panel(relightingRollout, "Bilateral Filter");
+
+    GLUI_Spinner *normalBilateralFilterPassesSpinner = glui->add_spinner_to_panel(bilateralPanel, "Filter Passes ", GLUI_SPINNER_INT, &relightingEffect->bilateralFilterPasses, -1, gluiCallback);
+    normalBilateralFilterPassesSpinner->set_int_limits(0, 10);
+    GLUI_Spinner *normalBilateralKernelSizeSpinner = glui->add_spinner_to_panel(bilateralPanel, "Kernel Size ", GLUI_SPINNER_INT, &relightingEffect->bilateralKernelSize, -1, gluiCallback);
+    normalBilateralKernelSizeSpinner->set_int_limits(1, 100);
+    GLUI_Spinner *normalBilateralSigmaSpinner = glui->add_spinner_to_panel(bilateralPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &relightingEffect->bilateralSigma, -1, gluiCallback);
+    normalBilateralSigmaSpinner->set_float_limits(0.001, 0.15);
+
 
 
 
@@ -252,8 +313,8 @@ void createInterface() {
     lightSpecularBlueSpinner->set_float_limits(0.0, 1);
 
     glui->add_statictext_to_panel(relightingRollout, "");
-    GLUI_Spinner *specularPowerSpinner = glui->add_spinner_to_panel(relightingRollout, "Specular Power ", GLUI_SPINNER_FLOAT, &relightingEffect->specularPower, -1, gluiCallback);
-    specularPowerSpinner->set_float_limits(0.0, 10);
+    GLUI_Spinner *specularPowerSpinner = glui->add_spinner_to_panel(relightingRollout, "Shininess ", GLUI_SPINNER_FLOAT, &relightingEffect->shininess, -1, gluiCallback);
+    specularPowerSpinner->set_float_limits(0.0, 50);
 
 
     //CARTOON SHADING
@@ -280,8 +341,8 @@ void createInterface() {
     bilateralFilterPassesSpinner->set_int_limits(1, 10);
     GLUI_Spinner *bilateralKernelSizeSpinner = glui->add_spinner_to_panel(bilateralRollout, "Kernel Size ", GLUI_SPINNER_INT, &cartoonEffect->bilateralKernelSize, -1, gluiCallback);
     bilateralKernelSizeSpinner->set_int_limits(1, 100);
-    GLUI_Spinner *bilateralSigmaSpinner = glui->add_spinner_to_panel(bilateralRollout, "Sigma ", GLUI_SPINNER_FLOAT, &cartoonEffect->bilateralSigma, -1, gluiCallback);
-    bilateralSigmaSpinner->set_float_limits(0.0, 100);
+    GLUI_Spinner *bilateralSigmaSpinner = glui->add_spinner_to_panel(bilateralRollout, "Sample Deviation ", GLUI_SPINNER_FLOAT, &cartoonEffect->bilateralSigma, -1, gluiCallback);
+    bilateralSigmaSpinner->set_float_limits(0.001, 0.15);
 
     //Kuwahara.
     GLUI_Rollout* kuwaharaRollout = glui->add_rollout_to_panel(filteringPanel, "Kuwahara", 0, GLUI_PANEL_EMBOSSED);
@@ -290,8 +351,6 @@ void createInterface() {
     kuwaharaFilterPassesSpinner->set_int_limits(1, 10);
     GLUI_Spinner *kuwaharaKernelSizeSpinner = glui->add_spinner_to_panel(kuwaharaRollout, "Kernel Size ", GLUI_SPINNER_INT, &cartoonEffect->kuwaharaKernelSize, -1, gluiCallback);
     kuwaharaKernelSizeSpinner->set_int_limits(1, 100);
-    GLUI_Spinner *kuwaharaSigmaSpinner = glui->add_spinner_to_panel(kuwaharaRollout, "Sigma ", GLUI_SPINNER_FLOAT, &cartoonEffect->kuwaharaSigma, -1, gluiCallback);
-    kuwaharaSigmaSpinner->set_float_limits(0.0, 1);
 
 
     //Edge
@@ -303,7 +362,7 @@ void createInterface() {
     glui->add_radiobutton_to_group(edgeMethodRadioGroup, "Depth Discontinuity");
     glui->add_radiobutton_to_group(edgeMethodRadioGroup, "Sobel Depth");
     glui->add_radiobutton_to_group(edgeMethodRadioGroup, "Sobel Colour");
-    glui->add_radiobutton_to_group(edgeMethodRadioGroup, "Radial Valley");
+
 
 
 
@@ -325,7 +384,10 @@ void createInterface() {
 
 // loads a quad into the VAO global
 
-void createQuad() {
+void createQuads() {
+    
+
+
 
     // make and bind the VAO
     glGenVertexArrays(1, &quadVAO);
@@ -350,14 +412,17 @@ void createQuad() {
     // unbind the VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-
+    
+    
+    
 }
 
 
 //Render the quad to a specified framebuffer
 
 void renderQuad(GLuint fb) {
+
+
 
     glBindFramebuffer(GL_FRAMEBUFFER, fb); //Use specified frame buffer
     glViewport(0, 0, screenWidth, screenHeight); // Render on the whole framebuffer, complete from the lower left corner to the upper right
@@ -463,12 +528,12 @@ GLuint createTexture() {
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     //Setup filtering and wrapping
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
+    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -493,7 +558,7 @@ void displayMaps() {
 
     glEnable(GL_TEXTURE_2D);
 
-    glBindTexture(GL_TEXTURE_2D, colourTexture);
+    glBindTexture(GL_TEXTURE_2D, depthTexture);
     glBegin(GL_TRIANGLE_FAN);
     glTexCoord2f(0, 0);
     glVertex3f(-1, -1, 0);
@@ -505,7 +570,7 @@ void displayMaps() {
     glVertex3f(-1, 1, 0);
     glEnd();
 
-    glBindTexture(GL_TEXTURE_2D, depthTexture);
+    glBindTexture(GL_TEXTURE_2D, normalTexture);
     glBegin(GL_TRIANGLE_FAN);
     glTexCoord2f(0, 0);
     glVertex3f(0, -1, 0);

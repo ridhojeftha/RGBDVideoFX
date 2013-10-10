@@ -4,6 +4,7 @@
 
 #define GLEW_STATIC
 #include <GL\glew.h>
+#include <GL\wglew.h>
 #include <GL\freeglut.h>
 #include <GL/glui.h>
 
@@ -16,7 +17,7 @@ void cleanupRenderer();
 void loadBMP(const char * filename, GLuint textureID);
 void fillTextureFromBuffer(unsigned char * data, GLuint textureID, int w, int h);
 GLuint createTexture();
-void createQuad();
+void createQuads();
 void renderQuad(GLuint fb);
 void gluiCallback(int control);
 void createInterface();

@@ -11,20 +11,20 @@ CartoonEffect::CartoonEffect() {
     edgeShader = new Shader("depthdiscontinuity.frag");
     sobelShader = new Shader("sobel.frag");
     radialValleyShader = new Shader("radialvalley.frag");
-    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight);
+    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
 
-    bilateralFilterPasses = 4;
+    bilateralFilterPasses = 2;
     bilateralKernelSize = 15;
-    bilateralSigma = 10;
+    bilateralSigma = 0.02;
 
     kuwaharaFilterPasses = 2;
     kuwaharaKernelSize = 5;
-    kuwaharaSigma = 0.12;
+
 
     edgeThreshold = 0.1;
 
-    edgeMethod = 0;
-    filteringMethod = 0;
+    edgeMethod = 2;
+    filteringMethod = 1;
     quantize = 0;
 
 }
@@ -43,8 +43,8 @@ void CartoonEffect::display() {
             //HORIZONTAL
             glUseProgram(HBilateralShader->id());
             glUniform1i(HBilateralShader->uniform("imageWidth"), inputWidth);
-            glUniform1i(HBilateralShader->uniform("kernelSize"), bilateralKernelSize);
-            glUniform1f(HBilateralShader->uniform("sigma"), bilateralSigma);
+            glUniform1i(HBilateralShader->uniform("sampleRadius"), bilateralKernelSize);
+            glUniform1f(HBilateralShader->uniform("distributionSigma"), bilateralSigma);
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -54,14 +54,15 @@ void CartoonEffect::display() {
             glBindTexture(GL_TEXTURE_2D, colourTexInput);
             glUniform1i(HBilateralShader->uniform("colourTexture"), 1);
 
+            glUniform1i(HBilateralShader->uniform("flipCoords"), false);
             renderQuad(intermdiateBuffer->fbo());
             colourTexInput = intermdiateBuffer->texture();
 
             //VERTICAL
             glUseProgram(VBilateralShader->id());
             glUniform1i(VBilateralShader->uniform("imageHeight"), inputHeight);
-            glUniform1i(VBilateralShader->uniform("kernelSize"), bilateralKernelSize);
-            glUniform1f(VBilateralShader->uniform("sigma"), bilateralSigma);
+            glUniform1i(VBilateralShader->uniform("sampleRadius"), bilateralKernelSize);
+            glUniform1f(VBilateralShader->uniform("distributionSigma"), bilateralSigma);
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -72,8 +73,10 @@ void CartoonEffect::display() {
             glUniform1i(VBilateralShader->uniform("colourTexture"), 1);
 
             if (edgeMethod == 0 && quantize == 0 && i == bilateralFilterPasses - 1) {
+                glUniform1i(VBilateralShader->uniform("flipCoords"), useKinect);
                 renderQuad(0);
             } else {
+                glUniform1i(VBilateralShader->uniform("flipCoords"), false);
                 renderQuad(intermdiateBuffer->fbo());
             }
         }
@@ -91,8 +94,7 @@ void CartoonEffect::display() {
 
             glUniform1i(kuwaharaShader->uniform("imageHeight"), inputHeight);
             glUniform1i(kuwaharaShader->uniform("imageWidth"), inputWidth);
-            glUniform1i(kuwaharaShader->uniform("kernelSize"), kuwaharaKernelSize);
-            glUniform1f(kuwaharaShader->uniform("sigma"), kuwaharaSigma);
+            glUniform1i(kuwaharaShader->uniform("kernelSize"), kuwaharaKernelSize);    
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -103,8 +105,10 @@ void CartoonEffect::display() {
             glUniform1i(kuwaharaShader->uniform("colourTexture"), 1);
 
             if (edgeMethod == 0 && i == kuwaharaFilterPasses - 1 && quantize == 0) {
+                glUniform1i(kuwaharaShader->uniform("flipCoords"), useKinect);
                 renderQuad(0);
             } else {
+                glUniform1i(kuwaharaShader->uniform("flipCoords"), false);
                 renderQuad(intermdiateBuffer->fbo());
 
             }
@@ -136,8 +140,10 @@ void CartoonEffect::display() {
         glUniform1i(edgeShader->uniform("colourTexture"), 1);
 
         if (quantize == 0) {
+             glUniform1i(edgeShader->uniform("flipCoords"), useKinect);
             renderQuad(0);
         } else {
+            glUniform1i(edgeShader->uniform("flipCoords"), false);
             renderQuad(intermdiateBuffer->fbo());
         }
     }
@@ -161,8 +167,10 @@ void CartoonEffect::display() {
         glUniform1i(sobelShader->uniform("colourTexture"), 1);
 
         if (quantize == 0) {
+             glUniform1i(sobelShader->uniform("flipCoords"), useKinect);
             renderQuad(0);
         } else {
+            glUniform1i(sobelShader->uniform("flipCoords"), false);
             renderQuad(intermdiateBuffer->fbo());
         }
 
@@ -186,8 +194,10 @@ void CartoonEffect::display() {
         glUniform1i(sobelShader->uniform("colourTexture"), 1);
 
         if (quantize == 0) {
+            glUniform1i(sobelShader->uniform("flipCoords"), useKinect);
             renderQuad(0);
         } else {
+            glUniform1i(sobelShader->uniform("flipCoords"), false);
             renderQuad(intermdiateBuffer->fbo());
         }
 
@@ -207,8 +217,10 @@ void CartoonEffect::display() {
         glUniform1i(radialValleyShader->uniform("colourTexture"), 1);
 
         if (quantize == 0) {
+            glUniform1i(radialValleyShader->uniform("flipCoords"), useKinect);
             renderQuad(0);
         } else {
+            glUniform1i(radialValleyShader->uniform("flipCoords"), false);
             renderQuad(intermdiateBuffer->fbo());
         }
     }
@@ -227,6 +239,7 @@ void CartoonEffect::display() {
         }
         glUniform1i(quantizationShader->uniform("colourTexture"), 0);
 
+         glUniform1i(quantizationShader->uniform("flipCoords"), useKinect);
         renderQuad(0);
     } else if ((edgeMethod == 0) && (filteringMethod == 0)) {
 
@@ -236,6 +249,7 @@ void CartoonEffect::display() {
         glBindTexture(GL_TEXTURE_2D, colourTexture);
         glUniform1i(textureShader->uniform("colourTexture"), 0);
 
+         glUniform1i(textureShader->uniform("flipCoords"), useKinect);
         renderQuad(0);
     }
 

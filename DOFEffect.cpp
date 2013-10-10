@@ -3,65 +3,114 @@
 
 DOFEffect::DOFEffect() {
 
-    lensDiameter = 5;
-    focalLength = 1;
+    lensDiameter = 0.5;
+    focalLength = 0.25;
     focalPlaneDepth = 0.5;
-    intensity=1;
+
+    preblurFilterPasses = 0;
+    preblurKernelSize = 5;
+    preblurSigma = 0.02;
+
+    distributionSigma = 0.02;
+    sampleRadius = 20;
 
     VBlurShader = new Shader("VBlur.frag");
     HBlurShader = new Shader("HBlur.frag");
+    blendShader = new Shader("DOFBlend.frag");
+    preblurHShader = new Shader("preblurH.frag");
+    preblurVShader = new Shader("preblurV.frag");
+    testShader = new Shader("CoC.frag");
 
-    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight);
+    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
+    blurredBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
+
+
 }
 
 void DOFEffect::display() {
-    
+
+
+    GLuint depthTexInput = depthTexture;
+
+    for (int i = 0; i < preblurFilterPasses; i++) {
+
+        //HORIZONTAL
+        glUseProgram(preblurHShader->id());
+        glUniform1i(preblurHShader->uniform("imageWidth"), inputWidth);
+        glUniform1i(preblurHShader->uniform("sampleRadius"), preblurKernelSize);
+        glUniform1f(preblurHShader->uniform("distributionSigma"), preblurSigma);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthTexInput);
+        glUniform1i(preblurHShader->uniform("colourTexture"), 0);
+
+
+        glUniform1i(preblurHShader->uniform("flipCoords"), false);
+        renderQuad(blurredBuffer->fbo());
+        depthTexInput = blurredBuffer->texture();
+
+        //VERTICAL
+        glUseProgram(preblurVShader->id());
+        glUniform1i(preblurVShader->uniform("imageHeight"), inputHeight);
+        glUniform1i(preblurVShader->uniform("sampleRadius"), preblurKernelSize);
+        glUniform1f(preblurVShader->uniform("distributionSigma"), preblurSigma);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthTexInput);
+        glUniform1i(preblurVShader->uniform("colourTexture"), 0);
+
+
+        glUniform1i(preblurVShader->uniform("flipCoords"), false);
+        renderQuad(blurredBuffer->fbo());
+
+    }
 
 
 
-       glUseProgram(HBlurShader->id());
-       
-       glUniform1i(HBlurShader->uniform("imageWidth"), inputWidth);
+    glUseProgram(HBlurShader->id());
 
-       glActiveTexture(GL_TEXTURE0);
-       glBindTexture(GL_TEXTURE_2D, depthTexture);
-       glUniform1i(HBlurShader->uniform("depthTexture"), 0);
 
-       glActiveTexture(GL_TEXTURE1);
-       glBindTexture(GL_TEXTURE_2D, colourTexture);
-       glUniform1i(HBlurShader->uniform("colourTexture"), 1);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, colourTexture);
+    glUniform1i(HBlurShader->uniform("colourTexture"), 0);
 
-       glUniform1f(HBlurShader->uniform("focalLength"), focalLength);
-       glUniform1f(HBlurShader->uniform("focalPlaneDepth"), focalPlaneDepth);
-       glUniform1f(HBlurShader->uniform("lensDiameter"), lensDiameter);
-       glUniform1f(HBlurShader->uniform("intensityConstant"), intensity);
 
-       renderQuad(intermdiateBuffer->fbo());
+    glUniform1i(HBlurShader->uniform("imageWidth"), inputWidth);
+    glUniform1f(HBlurShader->uniform("distributionSigma"), distributionSigma);
+    glUniform1i(HBlurShader->uniform("sampleRadius"), sampleRadius);
 
-       glUseProgram(VBlurShader->id());
-       glUniform1i(VBlurShader->uniform("imageHeight"), inputHeight);
-       
+    glUniform1i(HBlurShader->uniform("flipCoords"), false);
+    renderQuad(intermdiateBuffer->fbo());
 
-       glActiveTexture(GL_TEXTURE0);
-       glBindTexture(GL_TEXTURE_2D, depthTexture);
-       glUniform1i(VBlurShader->uniform("depthTexture"), 0);
+    glUseProgram(VBlurShader->id());
 
-       glActiveTexture(GL_TEXTURE1);
-       glBindTexture(GL_TEXTURE_2D, intermdiateBuffer->texture());
-       glUniform1i(VBlurShader->uniform("colourTexture"), 1);
 
-       glUniform1f(VBlurShader->uniform("focalLength"), focalLength);
-       glUniform1f(VBlurShader->uniform("focalPlaneDepth"), focalPlaneDepth);
-       glUniform1f(VBlurShader ->uniform("lensDiameter"), lensDiameter);
-       glUniform1f(VBlurShader->uniform("intensityConstant"), intensity);
 
-       renderQuad(0);
-   
-     
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, colourTexture);
+    glUniform1i(VBlurShader->uniform("colourTexture"), 0);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, depthTexInput);
+    glUniform1i(VBlurShader->uniform("depthTexture"), 1);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, intermdiateBuffer->texture());
+    glUniform1i(VBlurShader->uniform("blurredTexture"), 2);
+
+    glUniform1i(VBlurShader->uniform("imageHeight"), inputHeight);
+    glUniform1f(VBlurShader->uniform("distributionSigma"), distributionSigma);
+    glUniform1i(VBlurShader->uniform("sampleRadius"), sampleRadius);
+    glUniform1f(VBlurShader->uniform("focalLength"), focalLength);
+    glUniform1f(VBlurShader->uniform("focalPlaneDepth"), focalPlaneDepth);
+    glUniform1f(VBlurShader ->uniform("lensDiameter"), lensDiameter);
+
+
+    glUniform1i(VBlurShader->uniform("flipCoords"), useKinect);
+    renderQuad(0);
+
+
+
 
 }
-
-
 
 DOFEffect::~DOFEffect() {
     delete intermdiateBuffer;

@@ -4,6 +4,7 @@
  */
 #include "VideoCapture.h"
 #include "DepthProcessor.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -13,11 +14,11 @@ double freenect_angle(0);
 freenect_video_format requested_format(FREENECT_VIDEO_RGB);
 
 //buffers for depth and rgb
-static std::vector<int> rgb(640 * 480 * 3);
+static std::vector<float> rgb(640 * 480 * 3);
 static std::vector<float> depth(640 * 480);
-static std::vector<float> normals(640*480*3);
+static std::vector<float> normals(640 * 480 * 3);
 
-    using namespace std;
+using namespace std;
 
 void updateVideoCapture() {
 
@@ -25,18 +26,35 @@ void updateVideoCapture() {
     device->updateState();
 
     rgb = getRGBMap();
+ //   device->getRGB(rgb);
+    
+   // for (int i=0;i<50;i++){
+    //   std::cout<<depth[0]<<" "<<depth[1]<<"\n";
+     
+   // }
+    
+    
     depth = getDepthMap() /*getColourDepthMap()*/;
     normals = getNormalMap(); //basically you can call getNormalMap() from anywhere
 
     //Temporary GL Code
     glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, 1, 640, 480, 0, GL_LUMINANCE, GL_FLOAT, &depth[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, 1, 640, 480, 0, GL_RED, GL_FLOAT, &depth[0]);
+   // glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 640, 480, 0, GL_RED, GL_FLOAT, &depth[0]);
 
     glBindTexture(GL_TEXTURE_2D, colourTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_FLOAT, &normals[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_FLOAT, &rgb[0]);
+   // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8UI, 640, 480, 0, GL_RGB_INTEGER, GL_UNSIGNED_INT_8_8_8_8, &rgb[0]);
+
+
+    glBindTexture(GL_TEXTURE_2D, normalTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_FLOAT, &normals[0]);
+   //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_FLOAT, &normals[0]);
+   
 }
 
 //Start the Kinect device video and depth streams
+
 void startVideoCapture() {
 
     device = &freenect.createDevice<DepthProcessor>(0);
@@ -56,6 +74,7 @@ void startVideoCapture() {
 }
 
 void stopVideoCapture() {
+    std::cout << "Stopping device...\n";
     device->stopVideo();
     device->stopDepth();
     device->setLed(LED_GREEN);

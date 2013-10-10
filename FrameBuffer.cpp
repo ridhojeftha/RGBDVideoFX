@@ -1,7 +1,7 @@
 
 #include "FrameBuffer.h"
 
-FrameBuffer::FrameBuffer(int width, int height) {
+FrameBuffer::FrameBuffer(int width, int height, GLint channels) {
 
  // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
     fboID = 0;
@@ -15,7 +15,7 @@ FrameBuffer::FrameBuffer(int width, int height) {
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     // Give an empty image to OpenGL ( the last "0" )
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, channels, width, height, 0, channels, GL_UNSIGNED_BYTE, 0);
 
     // Poor filtering. Needed !
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
