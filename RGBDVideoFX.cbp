@@ -48,6 +48,8 @@
 		</Compiler>
 		<Unit filename="CartoonEffect.cpp" />
 		<Unit filename="CartoonEffect.h" />
+		<Unit filename="CoC.frag" />
+		<Unit filename="DOFBlend.frag" />
 		<Unit filename="DOFEffect.cpp" />
 		<Unit filename="DOFEffect.h" />
 		<Unit filename="DepthProcessor.h" />
@@ -57,6 +59,7 @@
 		<Unit filename="FrameBuffer.cpp" />
 		<Unit filename="FrameBuffer.h" />
 		<Unit filename="HBilateral.frag" />
+		<Unit filename="HBlur.frag" />
 		<Unit filename="Images/bird_DM.bmp" />
 		<Unit filename="Images/bird_RGB.bmp" />
 		<Unit filename="Images/child_DM.bmp" />
@@ -108,6 +111,8 @@
 		<Unit filename="Images/teapot_reflectance.bmp" />
 		<Unit filename="Main.cpp" />
 		<Unit filename="Main.h" />
+		<Unit filename="MapEffect.cpp" />
+		<Unit filename="MapEffect.h" />
 		<Unit filename="NormalMapGenerator.h" />
 		<Unit filename="PixelFilter.h" />
 		<Unit filename="RelightingEffect.cpp" />
@@ -124,9 +129,13 @@
 		<Unit filename="depthdiscontinuity.frag" />
 		<Unit filename="fog.frag" />
 		<Unit filename="kuwahara.frag" />
+		<Unit filename="kuwaharaDepth.frag" />
 		<Unit filename="passcoords.vert" />
 		<Unit filename="phong.frag" />
+		<Unit filename="preblurH.frag" />
+		<Unit filename="preblurV.frag" />
 		<Unit filename="quantization.frag" />
+		<Unit filename="radialvalley.frag" />
 		<Unit filename="readme.txt" />
 		<Unit filename="sobel.frag" />
 		<Unit filename="texture.frag" />
