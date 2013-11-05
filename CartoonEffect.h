@@ -11,6 +11,7 @@ public:
     CartoonEffect();
     virtual ~CartoonEffect();
     void display();
+    void resize();
 
     int bilateralFilterPasses;
     int bilateralKernelSize;

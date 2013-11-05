@@ -9,10 +9,23 @@ public:
     virtual ~MapEffect();
 
     void display();
+    void resize();
 
     int selectedMap;
+    int selectedPreFilter;
+
+    int preblurFilterPasses;
+    int preblurKernelSize;
+    float preblurSigma;
 
 private:
+
+    Shader* preblurHShader;
+    Shader* preblurVShader;
+    Shader* HBilateralShader;
+    Shader* VBilateralShader;
+
+    FrameBuffer* intermdiateBuffer;
 
     Shader* textureShader;
 

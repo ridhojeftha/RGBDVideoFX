@@ -17,7 +17,12 @@ FogEffect::FogEffect() {
     preblurVShader = new Shader("preblurV.frag");
     preblurHShader = new Shader("preblurH.frag");
     fogShader = new Shader("fog.frag");
-    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
+    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight);
+}
+
+void FogEffect::resize() {
+    intermdiateBuffer->resize();
+ 
 }
 
 void FogEffect::display() {

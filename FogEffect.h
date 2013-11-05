@@ -9,6 +9,7 @@ public:
     virtual ~FogEffect();
 
     void display();
+    void resize();
 
     float fogDensity;
     float fogAmount;

@@ -22,6 +22,7 @@ void renderQuad(GLuint fb);
 void gluiCallback(int control);
 void createInterface();
 void displayMaps();
+void resizeEffects();
 
 extern bool useEffects;
 extern bool useKinect;

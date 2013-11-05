@@ -21,6 +21,7 @@ public:
     virtual ~Effect() {
     };
     virtual void display() = 0;
+    virtual void resize() = 0;
 
 
 private:

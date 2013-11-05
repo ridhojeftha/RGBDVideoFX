@@ -35,6 +35,7 @@ void updateVideoCapture() {
     
     
     depth = getDepthMap() /*getColourDepthMap()*/;
+   //  depth = getCalibratedDepthMap();
     normals = getNormalMap(); //basically you can call getNormalMap() from anywhere
 
     //Temporary GL Code

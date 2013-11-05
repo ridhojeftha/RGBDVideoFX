@@ -11,7 +11,7 @@ CartoonEffect::CartoonEffect() {
     edgeShader = new Shader("depthdiscontinuity.frag");
     sobelShader = new Shader("sobel.frag");
     radialValleyShader = new Shader("radialvalley.frag");
-    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
+    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight);
 
     bilateralFilterPasses = 2;
     bilateralKernelSize = 15;
@@ -27,6 +27,10 @@ CartoonEffect::CartoonEffect() {
     filteringMethod = 1;
     quantize = 0;
 
+}
+
+void CartoonEffect::resize() {
+    intermdiateBuffer->resize();
 }
 
 void CartoonEffect::display() {

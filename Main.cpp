@@ -2,34 +2,24 @@
 #include "Main.h"
 #include "VideoCapture.h"
 #include "Renderer.h"
+#include "Effect.h"
 //#include "NormalMapGenerator.h"
 
 int main(int argc, char** argv) {
 
 
-    if (useKinect) {
-        inputWidth = 640;
-        inputHeight = 480;
-
-
-    } else {
-        inputWidth = 720;
-        inputHeight = 540;
-
-        //  inputWidth=1000;
-        //  inputHeight=1000;
-    }
+    inputWidth = 640;
+    inputHeight = 480;
 
 
 
     //Intialise window and effects
     if (useEffects) {
-
         initRenderer(argc, argv, inputWidth, inputHeight);
     } else {
-
-        initRenderer(argc, argv, inputWidth * 2, inputHeight);
+        initRenderer(argc, argv, inputWidth * 2, inputHeight * 2);
     }
+
 
 
 
@@ -41,13 +31,19 @@ int main(int argc, char** argv) {
 
         loadTextureFiles();
 
-        //  glBindTexture(GL_TEXTURE_2D, colourTexture);
-        //  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &inputWidth);
-        //  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &inputHeight);
+        if (useEffects) {
+            glBindTexture(GL_TEXTURE_2D, colourTexture);
+            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &inputWidth);
+            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &inputHeight);
+            screenWidth = inputWidth;
+            screenHeight = inputHeight;
+            glutReshapeWindow(inputWidth, inputHeight);
+            resizeEffects();
+        }
 
     }
 
-    wglSwapIntervalEXT(0);
+
 
     //Bind window callback functions
     glutCloseFunc(&close);
@@ -89,6 +85,63 @@ void keyboard(unsigned char key, int x, int y) {
                 startTime = timeGetTime();
             }
             break;
+        case 'm':
+
+            if (currentMap == colourTexture) {
+
+                currentMap = depthTexture;
+            } else if (currentMap == depthTexture) {
+
+                currentMap = normalTexture;
+            } else {
+
+                currentMap = colourTexture;
+
+            }
+            break;
+
+        case 's':
+            selectedTextureFile++;
+            if (selectedTextureFile == rgbTextureFiles.size()) {
+                selectedTextureFile = 0;
+            }
+            loadBMP(rgbTextureFiles[selectedTextureFile].c_str(), colourTexture);
+            loadBMP(depthTextureFiles[selectedTextureFile].c_str(), depthTexture);
+            loadBMP(normalTextureFiles[selectedTextureFile].c_str(), normalTexture);
+
+            if (useEffects) {
+                glBindTexture(GL_TEXTURE_2D, colourTexture);
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &inputWidth);
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &inputHeight);
+                screenWidth = inputWidth;
+                screenHeight = inputHeight;
+                glutReshapeWindow(inputWidth, inputHeight);
+                resizeEffects();
+            }
+
+            break;
+
+        case 'a':
+            selectedTextureFile--;
+            if (selectedTextureFile < 0) {
+                selectedTextureFile = rgbTextureFiles.size() - 1;
+            }
+            loadBMP(rgbTextureFiles[selectedTextureFile].c_str(), colourTexture);
+            loadBMP(depthTextureFiles[selectedTextureFile].c_str(), depthTexture);
+            loadBMP(normalTextureFiles[selectedTextureFile].c_str(), normalTexture);
+
+            if (useEffects) {
+                glBindTexture(GL_TEXTURE_2D, colourTexture);
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &inputWidth);
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &inputHeight);
+                screenWidth = inputWidth;
+                screenHeight = inputHeight;
+                glutReshapeWindow(inputWidth, inputHeight);
+                resizeEffects();
+            }
+
+            break;
+
     }
 }
 
@@ -152,42 +205,214 @@ void idle() {
 void loadTextureFiles() {
 
 
-    //Load textures from files
-    loadBMP("Images/teapot_reflectance.bmp", reflectanceTexture);
-    loadBMP("Images/teapot_normals.bmp", normalTexture);
+
+    rgbTextureFiles.push_back("Images/rgb/1.bmp");
+    depthTextureFiles.push_back("Images/depth/1.bmp");
+    normalTextureFiles.push_back("Images/normals/1.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/2.bmp");
+    depthTextureFiles.push_back("Images/depth/2.bmp");
+    normalTextureFiles.push_back("Images/normals/2.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/3.bmp");
+    depthTextureFiles.push_back("Images/depth/3.bmp");
+    normalTextureFiles.push_back("Images/normals/3.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/4.bmp");
+    depthTextureFiles.push_back("Images/depth/4.bmp");
+    normalTextureFiles.push_back("Images/normals/4.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/5.bmp");
+    depthTextureFiles.push_back("Images/depth/5.bmp");
+    normalTextureFiles.push_back("Images/normals/5.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/6.bmp");
+    depthTextureFiles.push_back("Images/depth/6.bmp");
+    normalTextureFiles.push_back("Images/normals/6.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/7.bmp");
+    depthTextureFiles.push_back("Images/depth/7.bmp");
+    normalTextureFiles.push_back("Images/normals/7.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/8.bmp");
+    depthTextureFiles.push_back("Images/depth/8.bmp");
+    normalTextureFiles.push_back("Images/normals/8.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/9.bmp");
+    depthTextureFiles.push_back("Images/depth/9.bmp");
+    normalTextureFiles.push_back("Images/normals/9.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/10.bmp");
+    depthTextureFiles.push_back("Images/depth/10.bmp");
+    normalTextureFiles.push_back("Images/normals/10.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/11.bmp");
+    depthTextureFiles.push_back("Images/depth/11.bmp");
+    normalTextureFiles.push_back("Images/normals/11.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/12.bmp");
+    depthTextureFiles.push_back("Images/depth/12.bmp");
+    normalTextureFiles.push_back("Images/normals/12.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/13.bmp");
+    depthTextureFiles.push_back("Images/depth/13.bmp");
+    normalTextureFiles.push_back("Images/normals/13.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/14.bmp");
+    depthTextureFiles.push_back("Images/depth/14.bmp");
+    normalTextureFiles.push_back("Images/normals/14.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/15.bmp");
+    depthTextureFiles.push_back("Images/depth/15.bmp");
+    normalTextureFiles.push_back("Images/normals/15.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/16.bmp");
+    depthTextureFiles.push_back("Images/depth/16.bmp");
+    normalTextureFiles.push_back("Images/normals/16.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/17.bmp");
+    depthTextureFiles.push_back("Images/depth/17.bmp");
+    normalTextureFiles.push_back("Images/normals/17.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/18.bmp");
+    depthTextureFiles.push_back("Images/depth/18.bmp");
+    normalTextureFiles.push_back("Images/normals/18.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/19.bmp");
+    depthTextureFiles.push_back("Images/depth/19.bmp");
+    normalTextureFiles.push_back("Images/normals/19.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/20.bmp");
+    depthTextureFiles.push_back("Images/depth/20.bmp");
+    normalTextureFiles.push_back("Images/normals/20.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/21.bmp");
+    depthTextureFiles.push_back("Images/depth/21.bmp");
+    normalTextureFiles.push_back("Images/normals/21.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/22.bmp");
+    depthTextureFiles.push_back("Images/depth/22.bmp");
+    normalTextureFiles.push_back("Images/normals/22.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/23.bmp");
+    depthTextureFiles.push_back("Images/depth/23.bmp");
+    normalTextureFiles.push_back("Images/normals/23.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/24.bmp");
+    depthTextureFiles.push_back("Images/depth/24.bmp");
+    normalTextureFiles.push_back("Images/normals/24.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/25.bmp");
+    depthTextureFiles.push_back("Images/depth/25.bmp");
+    normalTextureFiles.push_back("Images/normals/25.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/26.bmp");
+    depthTextureFiles.push_back("Images/depth/2.bmp");
+    normalTextureFiles.push_back("Images/normals/2.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/27.bmp");
+    depthTextureFiles.push_back("Images/depth/2.bmp");
+    normalTextureFiles.push_back("Images/normals/2.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/28.bmp");
+    depthTextureFiles.push_back("Images/depth/28.bmp");
+    normalTextureFiles.push_back("Images/normals/28.bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (1).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (1).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (1).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (2).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (2).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (2).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (3).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (3).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (3).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (4).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (4).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (4).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (5).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (5).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (5).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (6).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (6).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (6).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (7).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (7).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (7).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (8).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (8).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (8).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (8).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (8).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (8).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (9).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (9).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (9).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (9).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (9).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (9).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (10).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (10).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (10).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (11).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (11).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (11).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (12).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (12).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (12).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (13).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (13).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (13).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (14).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (14).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (14).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (15).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (15).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (15).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (16).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (16).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (16).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (17).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (17).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (17).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (18).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (18).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (18).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (19).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (19).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (19).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (20).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (20).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (20).bmp");
+
+    rgbTextureFiles.push_back("Images/rgb/colour (21).bmp");
+    depthTextureFiles.push_back("Images/depth/depth (21).bmp");
+    normalTextureFiles.push_back("Images/normals/normals (21).bmp");
 
 
-    //   loadBMP("Images/pixel_RGB.bmp", colourTexture);
-    // loadBMP("Images/pixel_Depth.bmp", depthTexture);
-
-    // loadBMP("Images/teapot_colour_noise.bmp", colourTexture);
-
-    //  loadBMP("Images/teapot_colour.bmp", colourTexture);
-
-
-    //loadBMP("Images/teapot_colour_white.bmp", colourTexture);
-    //   loadBMP("Images/teapot_depth.bmp", depthTexture);
-
-    //   loadBMP("Images/dofpro_billiardsRGB.bmp", colourTexture);
-    //  loadBMP("Images/dofpro_billiardsDM.bmp", depthTexture);
-
-
-    //    loadBMP("Images/dofpro_diet_pepsiRGB.bmp", colourTexture);
-    //    loadBMP("Images/dofpro_diet_pepsiDM.bmp", depthTexture);
-
-    loadBMP("Images/dofpro_teacupRGB.bmp", colourTexture);
-    loadBMP("Images/dofpro_teacupDM.bmp", depthTexture);
-
-    //   loadBMP("Images/dofpro_chessRGB.bmp", colourTexture);
-    //   loadBMP("Images/dofpro_chessDM.bmp", depthTexture);
-
-    //   loadBMP("Images/dofpro_chairsRGB.bmp", colourTexture);
-    //     loadBMP("Images/dofpro_chairsDM.bmp", depthTexture);
-
-    //    loadBMP("Images/bird_RGB.bmp", colourTexture);
-    //    loadBMP("Images/bird_DM.bmp", depthTexture);
-
-    //  loadBMP("Images/child_RGB.bmp", colourTexture);
-    // loadBMP("Images/child_DM.bmp", depthTexture);
+    loadBMP(rgbTextureFiles[selectedTextureFile].c_str(), colourTexture);
+    loadBMP(depthTextureFiles[selectedTextureFile].c_str(), depthTexture);
+    loadBMP(normalTextureFiles[selectedTextureFile].c_str(), normalTexture);
 }
 

@@ -11,23 +11,33 @@ DOFEffect::DOFEffect() {
     preblurKernelSize = 5;
     preblurSigma = 0.02;
 
+    preblurHShader = new Shader("preblurH.frag");
+    preblurVShader = new Shader("preblurV.frag");
+
+    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight);
+
     distributionSigma = 0.02;
     sampleRadius = 20;
 
     VBlurShader = new Shader("VBlur.frag");
     HBlurShader = new Shader("HBlur.frag");
     blendShader = new Shader("DOFBlend.frag");
-    preblurHShader = new Shader("preblurH.frag");
-    preblurVShader = new Shader("preblurV.frag");
+
     testShader = new Shader("CoC.frag");
 
-    intermdiateBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
-    blurredBuffer = new FrameBuffer(screenWidth, screenHeight, GL_RGB);
+
+    blurredBuffer = new FrameBuffer(screenWidth, screenHeight);
 
 
 }
 
+void DOFEffect::resize() {
+    intermdiateBuffer->resize();
+    blurredBuffer->resize();
+}
+
 void DOFEffect::display() {
+
 
 
     GLuint depthTexInput = depthTexture;

@@ -16,18 +16,35 @@
 #include "NormalMapGenerator.h"
 #include "Vector3.h"
 #include "PixelFilter.h"
+#include <Eigen\Core>
 
 using namespace std;
 
 //Maps available publicly
 static vector<float> depthMap(640 * 480);
+static vector<float> calibratedDepthMap(640 * 480);
 static vector<float> rgbMap(640 * 480 * 3);
 static vector<int> depthMapRGB(640 * 480 * 3);
+
 bool colourDepthMap = false;
 
 extern float nearPlane;
 extern float farPlane;
 extern int adaptiveDepthRange;
+
+        //vertex map constants
+        static const double fx_d = 1.0 / 5.9421434211923247e+02;
+        static const double fy_d = 1.0 / 5.9104053696870778e+02;
+        static const double cx_d = 3.3930780975300314e+02;
+        static const double cy_d = 2.4273913761751615e+02;
+        
+       static const Eigen::Vector3f translation(1.9985242312092553e-02f, -7.4423738761617583e-04f, -1.0916736334336222e-02f);
+        //static const Matrix4 finalMatrix = rotationMatrix.Transpose() * Matrix4::Translation(-translation);
+
+        static const double fx_rgb = 5.2921508098293293e+02;
+        static const double fy_rgb = 5.2556393630057437e+02;
+        static const double cx_rgb = 3.2894272028759258e+02;
+        static const double cy_rgb = 2.6748068171871557e+02;
 
 
 //define a FreenectDevice and a Mutex class (requirement libfreenect)
@@ -66,6 +83,8 @@ public:
         for (int i = 0; i < 640 * 480 * 3; ++i) {
             vertexMap.push_back(0.0f);
         }
+
+
     }
 
     //required callback method for RGB data from the Kinect
@@ -95,11 +114,16 @@ public:
         //The depth buffer contains a 640x480 array of 16bit (2 byte) depth values ranging from 0-2047
         depth = static_cast<uint16_t*> (_depth);
 
-        //vertex map constants
-        static const double fx_d = 1.0 / 5.9421434211923247e+02;
-        static const double fy_d = 1.0 / 5.9104053696870778e+02;
-        static const double cx_d = 3.3930780975300314e+02;
-        static const double cy_d = 2.4273913761751615e+02;
+
+
+        Eigen::Vector3f point;
+
+        static Eigen::Matrix3f rotationMatrix;
+        rotationMatrix << 9.9984628826577793e-01, 1.2635359098409581e-03, -1.7487233004436643e-02,
+                -1.4779096108364480e-03, 9.9992385683542895e-01, -1.2251380107679535e-02,
+                1.7470421412464927e-02, 1.2275341476520762e-02, 9.9977202419716948e-01;
+
+
 
         int min = 99999999;
         int max = -1;
@@ -143,12 +167,29 @@ public:
             vertexMap[3 * i + 0] = float((i % 640 - cx_d) * depth_mm * fx_d);
             vertexMap[3 * i + 1] = float((i / 640 - cy_d) * depth_mm * fy_d);
             vertexMap[3 * i + 2] = float(depth_mm);
+/*
+            point << vertexMap[3 * i + 0], vertexMap[3 * i + 1], vertexMap[3 * i + 2];
+
+            //for each pixel in the depth map - transform it into the appropriate rgb value
+            Eigen::Vector3f transformedPoint = rotationMatrix * point + translation;
+            int rgbX = (transformedPoint(0) * fx_rgb / transformedPoint(2)) + cx_rgb;
+            int rgbY = (transformedPoint(1) * fy_rgb / transformedPoint(2)) + cy_rgb;
+
+            if (rgbX >= 0 && rgbX < 640 && rgbY >= 0 && rgbY < 480) {
+                calibratedDepthMap[rgbY * 640 + rgbX] = depthMap[i];
+            }
+       */
+
         }
-        
-        if (adaptiveDepthRange==1){
-            farPlane=max;
-            nearPlane=min;
+
+
+
+        if (adaptiveDepthRange == 1) {
+            farPlane = max;
+            nearPlane = min;
         }
+
+
 
 
 
@@ -300,6 +341,10 @@ vector<float> getRGBMap() {
 
 vector<int> getColourDepthMap() {
     return depthMapRGB;
+}
+
+vector<float> getCalibratedDepthMap() {
+    return calibratedDepthMap;
 }
 
 #endif

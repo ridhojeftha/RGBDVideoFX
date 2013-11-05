@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <Vector>
 
 
 #define GLEW_STATIC
@@ -23,17 +24,24 @@ extern GLuint depthTexture;
 extern GLuint colourTexture;
 extern GLuint normalTexture;
 extern GLuint reflectanceTexture;
+extern GLuint currentMap;
 extern int inputWidth;
 extern int inputHeight;
 extern int window;
 
 //CHANGE THESE
-bool useKinect=true;
+bool useKinect=false;
 bool useEffects=true;
 
 int frameCounter=0;
 bool benchmarking=false;
 double totalTime=0;
+
+std::vector<std::string> rgbTextureFiles;
+std::vector<std::string> depthTextureFiles;
+std::vector<std::string> normalTextureFiles;
+
+int selectedTextureFile=0;
 
 unsigned long  startTime, endTime, tenFrameTime;
 

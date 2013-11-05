@@ -10,6 +10,7 @@ public:
     virtual ~DOFEffect();
     
     void display();
+    void resize();
     
     float distributionSigma;
     int sampleRadius;
