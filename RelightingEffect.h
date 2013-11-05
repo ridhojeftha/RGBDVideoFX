@@ -8,6 +8,7 @@ public:
     RelightingEffect();
     virtual ~RelightingEffect();
     void display();
+    void resize();
 
     float * lightDirection;
     float * materialAmbient;
@@ -17,16 +18,18 @@ public:
     float * lightDiffuse;
     float * lightSpecular;
     float shininess;
-    int relightingBase;
 
-    int bilateralFilterPasses;
-    int bilateralKernelSize;
-    float bilateralSigma;
+
+     int selectedPreFilter;
+    int preblurFilterPasses;
+    int preblurKernelSize;
+    float preblurSigma;
 
 private:
     Shader* HBilateralShader;
      Shader* VBilateralShader;
-
+    Shader* preblurHShader;
+    Shader* preblurVShader;
     Shader* phongShader;
     
       FrameBuffer* intermdiateBuffer;

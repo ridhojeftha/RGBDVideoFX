@@ -28,11 +28,15 @@ int inputWidth = 0;
 GLuint colourTexture = 0;
 GLuint depthTexture = 0;
 GLuint normalTexture = 0;
-GLuint reflectanceTexture = 0;
+
+
+GLuint currentMap = 0;
+
+
 
 float nearPlane = 200;
 float farPlane = 1000;
-int adaptiveDepthRange=1;
+int adaptiveDepthRange = 1;
 
 GLuint quadVAO = 0;
 GLuint quadVBO = 0;
@@ -50,20 +54,22 @@ void initRenderer(int argc, char** argv, int w, int h) {
     screenWidth = w;
     screenHeight = h;
 
+    glutInit(&argc, argv);
+
+    glutInitWindowSize(screenWidth, screenHeight);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
+
+
+
     if (useEffects) {
 
-        glutInit(&argc, argv);
-
-        glutInitWindowSize(screenWidth, screenHeight);
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
         window = glutCreateWindow("RGBD - Waiting for Kinect...");
-
         glewInit();
 
         colourTexture = createTexture();
         depthTexture = createTexture();
         normalTexture = createTexture();
-        reflectanceTexture = createTexture();
+    
 
 
         createQuads();
@@ -79,32 +85,42 @@ void initRenderer(int argc, char** argv, int w, int h) {
 
     } else {
 
-        glutInit(&argc, argv);
 
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
-        glutInitWindowSize(screenWidth, screenHeight);
-        glutInitWindowPosition(0, 0);
 
         window = glutCreateWindow("RGBD - Test Maps");
-
         glewInit();
-      
 
         glGenTextures(1, &depthTexture);
         glBindTexture(GL_TEXTURE_2D, depthTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
         glGenTextures(1, &colourTexture);
         glBindTexture(GL_TEXTURE_2D, colourTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
         glGenTextures(1, &normalTexture);
         glBindTexture(GL_TEXTURE_2D, normalTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        currentMap = colourTexture;
     }
+
+
 
 
 }
@@ -173,6 +189,20 @@ void createInterface() {
     glui->add_radiobutton_to_group(mapRadioGroup, "Depth");
     glui->add_radiobutton_to_group(mapRadioGroup, "Normals");
 
+    GLUI_Panel* mapPreblurPanel = glui->add_panel_to_panel(mapRollout, "Pre-processing");
+    GLUI_RadioGroup *mapPreblurRadioGroup = glui->add_radiogroup_to_panel(mapPreblurPanel, &mapEffect->selectedPreFilter, -1, gluiCallback);
+    glui->add_radiobutton_to_group(mapPreblurRadioGroup, "None");
+    glui->add_radiobutton_to_group(mapPreblurRadioGroup, "Blur");
+    glui->add_radiobutton_to_group(mapPreblurRadioGroup, "Bilateral");
+
+    GLUI_Spinner *mapPreblurPassesSpinner = glui->add_spinner_to_panel(mapPreblurPanel, "Filter Passes ", GLUI_SPINNER_INT, &mapEffect->preblurFilterPasses, -1, gluiCallback);
+    mapPreblurPassesSpinner->set_int_limits(0, 10);
+    GLUI_Spinner *mapPreblurKernelSizeSpinner = glui->add_spinner_to_panel(mapPreblurPanel, "Kernel Size ", GLUI_SPINNER_INT, &mapEffect->preblurKernelSize, -1, gluiCallback);
+    mapPreblurKernelSizeSpinner->set_int_limits(1, 100);
+    GLUI_Spinner *mapPreblurSigmaSpinner = glui->add_spinner_to_panel(mapPreblurPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &mapEffect->preblurSigma, -1, gluiCallback);
+    mapPreblurSigmaSpinner->set_float_limits(0.001, 0.15);
+
+
 
     //FOG
     GLUI_Rollout *fogRollout = glui->add_rollout("Fog", 0);
@@ -182,7 +212,7 @@ void createInterface() {
     fogDensitySpinner->set_float_limits(0.0, 20.0);
     GLUI_Spinner *fogAmountSpinner = glui->add_spinner_to_panel(fogRollout, "Amount ", GLUI_SPINNER_FLOAT, &fogEffect->fogAmount, -1, gluiCallback);
     fogAmountSpinner->set_float_limits(0.0, 1);
-    
+
     glui->add_statictext_to_panel(fogRollout, "");
     GLUI_Panel* fogPreblurPanel = glui->add_panel_to_panel(fogRollout, "Preblur");
 
@@ -192,7 +222,7 @@ void createInterface() {
     fogPreblurKernelSizeSpinner->set_int_limits(1, 100);
     GLUI_Spinner *fogPreblurSigmaSpinner = glui->add_spinner_to_panel(fogPreblurPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &fogEffect->preblurSigma, -1, gluiCallback);
     fogPreblurSigmaSpinner->set_float_limits(0.001, 0.15);
-    
+
 
     glui->add_statictext_to_panel(fogRollout, "");
     GLUI_Panel* fogColourPanel = glui->add_panel_to_panel(fogRollout, "Colour", GLUI_PANEL_EMBOSSED);
@@ -223,7 +253,7 @@ void createInterface() {
     GLUI_Spinner *focalDepthSpinner = glui->add_spinner_to_panel(DOFRollout, "Focal Depth ", GLUI_SPINNER_FLOAT, &dofEffect->focalPlaneDepth, -1, gluiCallback);
     focalDepthSpinner->set_float_limits(0.0, 1);
 
-        glui->add_statictext_to_panel(DOFRollout, "");
+    glui->add_statictext_to_panel(DOFRollout, "");
     GLUI_Panel* DOFPreblurPanel = glui->add_panel_to_panel(DOFRollout, "Preblur");
 
     GLUI_Spinner *DOFPreblurPassesSpinner = glui->add_spinner_to_panel(DOFPreblurPanel, "Filter Passes ", GLUI_SPINNER_INT, &dofEffect->preblurFilterPasses, -1, gluiCallback);
@@ -232,7 +262,7 @@ void createInterface() {
     DOFPreblurKernelSizeSpinner->set_int_limits(1, 100);
     GLUI_Spinner *DOFPreblurSigmaSpinner = glui->add_spinner_to_panel(DOFPreblurPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &dofEffect->preblurSigma, -1, gluiCallback);
     DOFPreblurSigmaSpinner->set_float_limits(0.001, 0.15);
-    
+
 
     //Relighting
     GLUI_Rollout *relightingRollout = glui->add_rollout("Relighting", 0);
@@ -240,22 +270,19 @@ void createInterface() {
     glui->add_statictext_to_panel(relightingRollout, "")->set_w(200);
     glui->add_rotation_to_panel(relightingRollout, "Light Direction", relightingEffect->lightDirection, -1, gluiCallback);
 
-    glui->add_statictext_to_panel(relightingRollout, "");
-    GLUI_Panel *relightingBasePanel = glui->add_panel_to_panel(relightingRollout, "Base Image");
-    GLUI_RadioGroup *relightingBaseRadioGroup = glui->add_radiogroup_to_panel(relightingBasePanel, &relightingEffect->relightingBase, -1, gluiCallback);
-    glui->add_radiobutton_to_group(relightingBaseRadioGroup, "Colour");
-    glui->add_radiobutton_to_group(relightingBaseRadioGroup, "Reflectance");
 
-    //Bilateral.
-    glui->add_statictext_to_panel(relightingRollout, "");
-    GLUI_Panel* bilateralPanel = glui->add_panel_to_panel(relightingRollout, "Bilateral Filter");
+    GLUI_Panel* relightingPreblurPanel = glui->add_panel_to_panel(relightingRollout, "Pre-processing");
+    GLUI_RadioGroup *relightingPreblurRadioGroup = glui->add_radiogroup_to_panel(relightingPreblurPanel, &relightingEffect->selectedPreFilter, -1, gluiCallback);
+    glui->add_radiobutton_to_group(relightingPreblurRadioGroup, "None");
+    glui->add_radiobutton_to_group(relightingPreblurRadioGroup, "Blur");
+    glui->add_radiobutton_to_group(relightingPreblurRadioGroup, "Bilateral");
 
-    GLUI_Spinner *normalBilateralFilterPassesSpinner = glui->add_spinner_to_panel(bilateralPanel, "Filter Passes ", GLUI_SPINNER_INT, &relightingEffect->bilateralFilterPasses, -1, gluiCallback);
-    normalBilateralFilterPassesSpinner->set_int_limits(0, 10);
-    GLUI_Spinner *normalBilateralKernelSizeSpinner = glui->add_spinner_to_panel(bilateralPanel, "Kernel Size ", GLUI_SPINNER_INT, &relightingEffect->bilateralKernelSize, -1, gluiCallback);
-    normalBilateralKernelSizeSpinner->set_int_limits(1, 100);
-    GLUI_Spinner *normalBilateralSigmaSpinner = glui->add_spinner_to_panel(bilateralPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &relightingEffect->bilateralSigma, -1, gluiCallback);
-    normalBilateralSigmaSpinner->set_float_limits(0.001, 0.15);
+    GLUI_Spinner *relightingPreblurPassesSpinner = glui->add_spinner_to_panel(relightingPreblurPanel, "Filter Passes ", GLUI_SPINNER_INT, &relightingEffect->preblurFilterPasses, -1, gluiCallback);
+    relightingPreblurPassesSpinner->set_int_limits(0, 10);
+    GLUI_Spinner *relightingPreblurKernelSizeSpinner = glui->add_spinner_to_panel(relightingPreblurPanel, "Kernel Size ", GLUI_SPINNER_INT, &relightingEffect->preblurKernelSize, -1, gluiCallback);
+    relightingPreblurKernelSizeSpinner->set_int_limits(1, 100);
+    GLUI_Spinner *relightingPreblurSigmaSpinner = glui->add_spinner_to_panel(relightingPreblurPanel, "Sample Deviation ", GLUI_SPINNER_FLOAT, &relightingEffect->preblurSigma, -1, gluiCallback);
+    relightingPreblurSigmaSpinner->set_float_limits(0.001, 0.15);
 
 
 
@@ -385,7 +412,7 @@ void createInterface() {
 // loads a quad into the VAO global
 
 void createQuads() {
-    
+
 
 
 
@@ -412,9 +439,17 @@ void createQuads() {
     // unbind the VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    
-    
-    
+
+
+
+}
+
+void resizeEffects(){
+    cartoonEffect->resize();
+    fogEffect->resize();
+    relightingEffect->resize();
+    dofEffect->resize();
+    mapEffect->resize();
 }
 
 
@@ -561,13 +596,25 @@ void displayMaps() {
     glBindTexture(GL_TEXTURE_2D, depthTexture);
     glBegin(GL_TRIANGLE_FAN);
     glTexCoord2f(0, 0);
-    glVertex3f(-1, -1, 0);
+    glVertex3f(-1, 0, 0);
     glTexCoord2f(1, 0);
-    glVertex3f(0, -1, 0);
+    glVertex3f(0, 0, 0);
     glTexCoord2f(1, 1);
     glVertex3f(0, 1, 0);
     glTexCoord2f(0, 1);
     glVertex3f(-1, 1, 0);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, colourTexture);
+    glBegin(GL_TRIANGLE_FAN);
+    glTexCoord2f(0, 0);
+    glVertex3f(0, 0, 0);
+    glTexCoord2f(1, 0);
+    glVertex3f(1, 0, 0);
+    glTexCoord2f(1, 1);
+    glVertex3f(1, 1, 0);
+    glTexCoord2f(0, 1);
+    glVertex3f(0, 1, 0);
     glEnd();
 
     glBindTexture(GL_TEXTURE_2D, normalTexture);
@@ -577,11 +624,10 @@ void displayMaps() {
     glTexCoord2f(1, 0);
     glVertex3f(1, -1, 0);
     glTexCoord2f(1, 1);
-    glVertex3f(1, 1, 0);
+    glVertex3f(1, 0, 0);
     glTexCoord2f(0, 1);
-    glVertex3f(0, 1, 0);
+    glVertex3f(0, 0, 0);
     glEnd();
-
 
     //Swap the back and front buffer
     glutSwapBuffers();
