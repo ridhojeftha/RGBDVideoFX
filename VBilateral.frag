@@ -8,42 +8,38 @@ uniform sampler2D colourTexture;
 out vec3 colour;
 in vec2 UV;
 
-uniform int kernelSize;
-uniform float sigma;
+uniform int sampleRadius;
+uniform float distributionSigma;
 
-float gaussianCoef(int x, int y){
-    return exp(-((x*x)+(y*y))/(2*sigma*sigma));
+
+float totalWeight=1.0;
+float depth;
+
+void samplePixel(vec2 coord, float dist)
+{
+
+    float euclideanDifference = exp(-(dist*dist)/(2.0*distributionSigma*distributionSigma));
+    float depthDifference = abs(depth - texture2D(depthTexture, coord).r);         
+    float intensity=euclideanDifference / (depthDifference+0.01);
+
+    colour+=texture2D(colourTexture, coord).rgb*intensity;
+    totalWeight+=intensity;
+
 }
+
 
 void main()
 {
 
+    depth = texture2D(depthTexture, UV).r;
+    colour = texture2D(colourTexture, UV).rgb;
+  
+    for (int i=1;i<=sampleRadius;i++){
+        float step = float(i)/float(imageHeight);
+        samplePixel(UV+vec2(0.0,step),step);
+        samplePixel(UV-vec2(0.0,step),step);
+    }
 
-    vec4 color = vec4(0.0);
-    vec2 sample;
-    float sum = 0.0;
-    float coefG,coefZ,finalCoef;
-    float Zp = texture2D(depthTexture, UV).r;
-
-   
- //const float epsilon = 0.01;
-
- const float epsilon = 0.01;
-
-
-        for(int j = -(kernelSize-1)/2; j <= (kernelSize-1)/2; j++) {
-
-            sample = UV + (vec2(0,j) / float(imageHeight));
-            coefG = gaussianCoef(0,j);
-            float zTmp = texture2D(depthTexture, sample).r;
-            coefZ = epsilon + abs(Zp - zTmp);
-            finalCoef = coefG / coefZ;
-            sum += finalCoef;
-            color += finalCoef * texture2D(colourTexture,sample);
-
-        }
-    
-
-    colour = (color / sum).rgb;
+    colour/=totalWeight;
 } 
 

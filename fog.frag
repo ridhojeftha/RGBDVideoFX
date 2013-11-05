@@ -2,8 +2,10 @@
 
 uniform sampler2D depthTexture;
 uniform sampler2D colourTexture;
+
 uniform float fogDensity;
 uniform vec3 fogColour;
+uniform float fogAmount;
 
 out vec3 colour;
 in vec2 UV;
@@ -11,8 +13,8 @@ in vec2 UV;
 void main()
 {
 
-float fogAmount = 1/exp(pow(length(texture2D(depthTexture, UV))*(1.0-fogDensity),2));
-colour = (fogColour.rgb*fogAmount)+(texture2D(colourTexture, UV).rgb*(1-fogAmount));
+    float fogRatio = 1.0/exp(pow((1.0-texture2D(depthTexture, UV).r)*(1.0-fogAmount),fogDensity));
+    colour = (fogColour.rgb*fogRatio)+(texture2D(colourTexture, UV).rgb*(1.0-fogRatio));
 
  
 }

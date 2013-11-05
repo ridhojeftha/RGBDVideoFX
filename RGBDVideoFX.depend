@@ -913,14 +913,14 @@
 1380013240 h:\documents\rgbd\vector3.h
 	<iostream>
 
-1381415151 source:h:\documents\rgbdvideofx\cartooneffect.cpp
+1383647640 source:h:\documents\rgbdvideofx\cartooneffect.cpp
 	"CartoonEffect.h"
 	"Renderer.h"
 
-1381415151 h:\documents\rgbdvideofx\cartooneffect.h
+1381705052 h:\documents\rgbdvideofx\cartooneffect.h
 	"Effect.h"
 
-1380021669 h:\documents\rgbdvideofx\effect.h
+1381704990 h:\documents\rgbdvideofx\effect.h
 	<GL/glew.h>
 	"Shader.h"
 	"FrameBuffer.h"
@@ -938,18 +938,18 @@
 
 1380021701 h:\documents\rgbdvideofx\include\gl\gl.h
 
-1380021688 h:\documents\rgbdvideofx\shader.h
+1380885720 h:\documents\rgbdvideofx\shader.h
 	<GL/glew.h>
 	<iostream>
 	<fstream>
 	<string>
 	<stdexcept>
 
-1381415152 h:\documents\rgbdvideofx\framebuffer.h
+1381704736 h:\documents\rgbdvideofx\framebuffer.h
 	<stdio.h>
 	<GL/glew.h>
 
-1381415154 h:\documents\rgbdvideofx\renderer.h
+1381705226 h:\documents\rgbdvideofx\renderer.h
 	<GL\glew.h>
 	<GL\wglew.h>
 	<GL\freeglut.h>
@@ -984,30 +984,30 @@
 1380021701 h:\documents\rgbdvideofx\include\gl\glut.h
 	"freeglut.h"
 
-1381415152 source:h:\documents\rgbdvideofx\dofeffect.cpp
+1381705130 source:h:\documents\rgbdvideofx\dofeffect.cpp
 	"DOFEffect.h"
 	"Renderer.h"
 
-1381415152 h:\documents\rgbdvideofx\dofeffect.h
+1381705052 h:\documents\rgbdvideofx\dofeffect.h
 	"Effect.h"
 
-1381415152 source:h:\documents\rgbdvideofx\fogeffect.cpp
+1381705130 source:h:\documents\rgbdvideofx\fogeffect.cpp
 	"FogEffect.h"
 	"Renderer.h"
 
-1381415152 h:\documents\rgbdvideofx\fogeffect.h
+1381705052 h:\documents\rgbdvideofx\fogeffect.h
 	"Effect.h"
 
-1381415152 source:h:\documents\rgbdvideofx\framebuffer.cpp
+1381704912 source:h:\documents\rgbdvideofx\framebuffer.cpp
 	"FrameBuffer.h"
 
-1381415153 source:h:\documents\rgbdvideofx\relightingeffect.cpp
+1381767068 source:h:\documents\rgbdvideofx\relightingeffect.cpp
 	"RelightingEffect.h"
 	"Renderer.h"
 	<Eigen/Core>
 	<Eigen/Geometry>
 
-1381415153 h:\documents\rgbdvideofx\relightingeffect.h
+1381767042 h:\documents\rgbdvideofx\relightingeffect.h
 	"Effect.h"
 
 1380021689 h:\documents\rgbdvideofx\include\eigen\core
@@ -1696,12 +1696,13 @@
 
 1380021695 h:\documents\rgbdvideofx\include\eigen\src\eigen2support\geometry\parametrizedline.h
 
-1381415153 source:h:\documents\rgbdvideofx\main.cpp
+1381705892 source:h:\documents\rgbdvideofx\main.cpp
 	"Main.h"
 	"VideoCapture.h"
 	"Renderer.h"
+	"Effect.h"
 
-1381415153 h:\documents\rgbdvideofx\main.h
+1383652204 h:\documents\rgbdvideofx\main.h
 	<stdlib.h>
 	<stdio.h>
 	<windows.h>
@@ -1709,6 +1710,7 @@
 	<iostream>
 	<string>
 	<sstream>
+	<Vector>
 	<GL/glew.h>
 	<GL/wglew.h>
 	<GL/freeglut.h>
@@ -1750,11 +1752,11 @@
 	<stdint.h>
 	<sys/time.h>
 
-1381415154 h:\documents\rgbdvideofx\videocapture.h
+1380887776 h:\documents\rgbdvideofx\videocapture.h
 	"GL/glew.h"
 	<GL\freeglut.h>
 
-1381415154 source:h:\documents\rgbdvideofx\renderer.cpp
+1381766848 source:h:\documents\rgbdvideofx\renderer.cpp
 	<stdlib.h>
 	<stdio.h>
 	<iostream>
@@ -1769,13 +1771,13 @@
 	"CartoonEffect.h"
 	"MapEffect.h"
 
-1381415154 source:h:\documents\rgbdvideofx\videocapture.cpp
+1381489586 source:h:\documents\rgbdvideofx\videocapture.cpp
 	"VideoCapture.h"
 	"DepthProcessor.h"
 	<iostream>
 	<fstream>
 
-1381415152 h:\documents\rgbdvideofx\depthprocessor.h
+1381489688 h:\documents\rgbdvideofx\depthprocessor.h
 	"libfreenect.hpp"
 	<iostream>
 	<fstream>
@@ -1787,8 +1789,9 @@
 	"NormalMapGenerator.h"
 	"Vector3.h"
 	"PixelFilter.h"
+	<Eigen\Core>
 
-1380777321 h:\documents\rgbdvideofx\normalmapgenerator.h
+1380885720 h:\documents\rgbdvideofx\normalmapgenerator.h
 	<pthread.h>
 	<unistd.h>
 	<stdio.h>
@@ -1797,23 +1800,23 @@
 	<iostream>
 	"Vector3.h"
 
-1380777368 h:\documents\rgbdvideofx\vector3.h
+1380885720 h:\documents\rgbdvideofx\vector3.h
 	<iostream>
 
-1381415154 source:h:\documents\rgbdvideofx\shader.cpp
+1381262050 source:h:\documents\rgbdvideofx\shader.cpp
 	"Shader.h"
 
-1380758246 h:\documents\rgbdvideofx\pixelfilter.h
+1380885720 h:\documents\rgbdvideofx\pixelfilter.h
 	<math.h>
 	<cmath>
 
 1380021701 h:\documents\rgbdvideofx\include\gl\wglew.h
 	<windows.h>
 
-1381415153 h:\documents\rgbdvideofx\mapeffect.h
+1381705020 h:\documents\rgbdvideofx\mapeffect.h
 	"Effect.h"
 
-1381415153 source:h:\documents\rgbdvideofx\mapeffect.cpp
+1381705130 source:h:\documents\rgbdvideofx\mapeffect.cpp
 	"MapEffect.h"
 	"Renderer.h"
 

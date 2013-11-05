@@ -30,7 +30,7 @@ extern int inputHeight;
 extern int window;
 
 //CHANGE THESE
-bool useKinect=false;
+bool useKinect=true;
 bool useEffects=true;
 
 int frameCounter=0;

@@ -11,44 +11,38 @@ in vec2 UV;
 
 uniform float threshold;
 
-
-float intensity(in vec4 color)
+float intensity(in vec4 colour)
 {
-	return sqrt((color.x*color.x)+(color.y*color.y)+(color.z*color.z));
+    return (colour.r*colour.r)+(colour.g*colour.g)+(colour.b*colour.b);
 }
  
-
  
 void main(void)
 {
     float xstep = 1.0/float(imageWidth);
     float ystep = 1.0/float(imageHeight);
-  
+
+    float samples[8]; 
 	
-
     // get samples around pixel
-    float tleft = intensity(texture2D(edgeTexture,UV + vec2(-xstep,ystep)));
-    float left = intensity(texture2D(edgeTexture,UV + vec2(-xstep,0)));
-    float bleft = intensity(texture2D(edgeTexture,UV + vec2(-xstep,-ystep)));
-    float top = intensity(texture2D(edgeTexture,UV + vec2(0,ystep)));
-    float bottom = intensity(texture2D(edgeTexture,UV + vec2(0,-ystep)));
-    float tright = intensity(texture2D(edgeTexture,UV + vec2(xstep,ystep)));
-    float right = intensity(texture2D(edgeTexture,UV + vec2(xstep,0)));
-    float bright = intensity(texture2D(edgeTexture,UV + vec2(xstep,-ystep)));
- 
-	// Sobel masks (to estimate gradient)
-	//        1 0 -1     -1 -2 -1
-	//    X = 2 0 -2  Y = 0  0  0
-	//        1 0 -1      1  2  1
- 
-    float x = tleft + 2.0*left + bleft - tright - 2.0*right - bright;
-    float y = -tleft - 2.0*top - tright + bleft + 2.0 * bottom + bright;
-    float magnitude = sqrt((x*x) + (y*y));
+    samples[0] = intensity(texture2D(edgeTexture,UV + vec2(-xstep,ystep)));
+    samples[1] = intensity(texture2D(edgeTexture,UV + vec2(-xstep,0)));
+    samples[2] = intensity(texture2D(edgeTexture,UV + vec2(-xstep,-ystep)));
 
-    if (magnitude > threshold){
-        colour = vec3(0);
-    }else{
-        colour = texture2D(colourTexture,UV).rgb;
-    }
+    samples[3] = intensity(texture2D(edgeTexture,UV + vec2(0,ystep)));
+    samples[4] = intensity(texture2D(edgeTexture,UV + vec2(0,-ystep)));
+
+    samples[5] = intensity(texture2D(edgeTexture,UV + vec2(xstep,ystep)));
+    samples[6] = intensity(texture2D(edgeTexture,UV + vec2(xstep,0)));
+    samples[7] = intensity(texture2D(edgeTexture,UV + vec2(xstep,-ystep)));
+ 
+    //        1 0 -1     -1 -2 -1
+    //    X = 2 0 -2  Y = 0  0  0
+    //        1 0 -1      1  2  1
+ 
+    float xGradient = samples[0] + 2.0*samples[1] + samples[2] - samples[5] - 2.0*samples[6] - samples[7];
+    float yGradient = -samples[0] - 2.0*samples[3] - samples[5] + samples[2] + 2.0 * samples[4] + samples[7];
+
+    colour = (xGradient*xGradient) + (yGradient*yGradient) <= threshold ? texture2D(colourTexture,UV).rgb : vec3(0);
  
 }

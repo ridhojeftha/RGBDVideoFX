@@ -1,13 +1,15 @@
 #version 330
+uniform bool flipCoords;
 
-layout(location = 0) in vec3 pos;
-layout(location = 1) in vec2 coord;
-
+in vec3 pos;
+in vec2 coord;
 out vec2 UV;
 
-void main(){
+void main()
+{
 
-UV=coord.st;
-gl_Position=vec4(pos, 1.0);
+    UV= flipCoords ? vec2(coord.s, 1.0 - coord.t) : coord.st;
+    gl_Position=vec4(pos, 1.0);
 
 }
+

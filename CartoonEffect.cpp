@@ -98,7 +98,7 @@ void CartoonEffect::display() {
 
             glUniform1i(kuwaharaShader->uniform("imageHeight"), inputHeight);
             glUniform1i(kuwaharaShader->uniform("imageWidth"), inputWidth);
-            glUniform1i(kuwaharaShader->uniform("kernelSize"), kuwaharaKernelSize);    
+            glUniform1i(kuwaharaShader->uniform("kernelSize"), kuwaharaKernelSize);
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -206,7 +206,7 @@ void CartoonEffect::display() {
         }
 
     }
-    
+
      //Depth discontiuity
     if (edgeMethod == 4) {
 
@@ -228,7 +228,7 @@ void CartoonEffect::display() {
             renderQuad(intermdiateBuffer->fbo());
         }
     }
-    
+
 
     if (quantize == 1) {
 
